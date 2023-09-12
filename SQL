@@ -1,0 +1,22 @@
+DROP TABLE IF EXISTS users,Pizza;
+
+CREATE TABLE users (
+    u_id varchar(36) NOT NULL UNIQUE,
+    u_username varchar(50) UNIQUE,
+    u_password varchar(255),
+    u_createDate datetime NOT NULL,
+    u_status boolean NOT NULL DEFAULT 1,
+
+    PRIMARY KEY (u_id)
+);
+CREATE TABLE Pizza (
+    PizzaId int(5) NOT NULL AUTO_INCREMENT,
+    Category varchar(30) UNIQUE,
+    Price int,
+    PRIMARY KEY (PizzaId) 
+);
+
+INSERT INTO users (u_id,u_username,u_password,u_createDate,u_status) VALUES (uuid(),'123456','123456@Abc',now(),default);
+
+INSERT INTO Pizza(PizzaId,Category,Price) VALUES (default,'hawaii', 20);
+INSERT INTO Pizza(PizzaId,Category,Price) VALUES (default,'mozallera', 25);
