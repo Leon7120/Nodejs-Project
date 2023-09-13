@@ -5,30 +5,47 @@ const express = require('express');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const app = express();
-
-// const passport = require('passport');
-const crypto = require('crypto');
-
+const cors = require("cors");
 require('dotenv').config()
 
 const indexRouter = require('./routes/index');
-const connection = require('./config/database').connection;
+const dataConnection = require('./config/database');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+app.use(cors({
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  method: ["GET", "POST"],
+  Credential: true
+}));
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const sessionStore = new MySQLStore(connection);
+const sessionStore = new MySQLStore({
+  clearExpired: true,
+  expiration: 86400000,
+  createDatabaseTable: true,
+  connectionLimit: 50,
+  schema: {
+    tableName: 'sessions',
+    columnNames: {
+      session_id: 'session_id',
+      expires: 'expires',
+      data: 'data'
+    }
+  }
+}/* session store options */, dataConnection);
 
 app.use(session({
   secret: process.env.SESSION,
   resave: false,
-  //store: sessionStore,
+  store: sessionStore,
   saveUninitialized: true,
   cookie: { maxAge: 1000 * 60 * 60 * 24 }
 }));

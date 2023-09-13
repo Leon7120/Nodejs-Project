@@ -9,15 +9,15 @@ var login = (username, password) => {
             if (error) {
                 reject(error);
             }
-            else {
-                var hashPassword = data[0].u_password;
-                if (data.length > 0 && validPassword(password,hashPassword) && (data[0].u_username === username)) {
+            if (data.length === 1 && (data[0].u_username === username)) {
+                let hashPassword = data[0].u_password;
+                if (validPassword(password, hashPassword)) {
                     resolve(true);
-                } else {
-                    resolve(false);
                 }
+                resolve(false);
             }
         })
+
     })
 }
 var isAuthenticated = (req, res, next) => {
@@ -30,11 +30,11 @@ var isAuthenticated = (req, res, next) => {
 }
 var createUser = (username, password) => {
 
-    let query = "INSERT INTO users (u_id,u_username,u_password,u_createDate,u_status) VALUES (uuid(),?,?,now(),default)";
+    let query = "INSERT INTO users (u_id,u_username,u_password,u_createDate,u_status) VALUES (uuid(),?,?,CURDATE(),default)";
 
     var hashPassword = genPassword(password);
 
-    db.query(query, [username,hashPassword], (error, result) => {
+    db.query(query, [username, hashPassword], (error, result) => {
         if (error) {
             throw Error(error);
         } else {
@@ -49,7 +49,7 @@ function genPassword(password) {
     var genHash = crypto.pbkdf2Sync(password, "salt", 10000, 64, 'sha512').toString('hex');
     return genHash;
 }
-function validPassword(password,hashPassword){
+function validPassword(password, hashPassword) {
     var verifyHash = crypto.pbkdf2Sync(password, "salt", 10000, 64, 'sha512').toString('hex');
     return hashPassword === verifyHash;
 }
@@ -70,12 +70,12 @@ var getAll = () => {
 
 var createPizza = (category, price) => {
 
-    let query = "insert Pizza(PizzaId,Category,Price) VALUES (default,?)";
+    let query = "insert into Pizza(PizzaId,Category,Price) VALUES (default,?)";
     let value = [category, price];
 
     db.query(query, [value], (error, result) => {
         if (error) {
-            throw Error("insert error");
+            throw Error(error);
         } else {
             if (result.affectedRows == 1) {
                 return result;
@@ -104,23 +104,19 @@ var deletePizza = (id) => {
             }
         })
     })
-
-
 }
 
 var updatePizza = (id, category, price) => {
 
     return new Promise((resolve, reject) => {
-        const updateId = id;
-        const updateCategory = category;
-        const updatePrice = price;
 
         let query = "update pizza set category = ? , price = ? where pizzaId = ?";
 
-        db.query(query, [updateCategory, updatePrice, updateId], (error, result) => {
+        db.query(query, [category, price, id], (error, result) => {
             if (error) {
                 reject(error);
             } else {
+                console.log(result.affectedRows);
                 if (result.affectedRows == 1) {
                     resolve(true);
                 } else {

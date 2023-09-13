@@ -1,6 +1,8 @@
 
 var services = require('./services');
 const { validationResult } = require("express-validator");
+// const passport = require('passport');
+
 var isAuthenticated = (req, res, next) => {
     services.isAuthenticated;
 }
@@ -13,22 +15,23 @@ var login = async (req, res) => {
     let password = req.body.password;
 
     let returnUsername = await services.login(username, password);
-    
     if (returnUsername) {
         req.session.regenerate(function (error) {
-            if (error) {
-                
+            if (error) {              
                 res.status(400)
                     .send({ message: " Something wrong" })
+                    .end();
             }
-            req.session.user = username;
+            //req.session.user = username;
             res.status(200)
                 .send({ message: " Successfully Login" })
+                .end();
                 // .redirect('/user');
         });
     } else {
         res.status(400)
-            .send({ message: " Something wrong with username or password!" })
+            .send({ message: "Something wrong with username or password!" })
+            .end();
     }
 }
 var logout = (req, res, next) => {
@@ -83,7 +86,7 @@ var createPizza = (req, res) => {
     price = req.body.price;
 
     try {
-        services.createOne(category, price);
+        services.createPizza(category, price);
         res.status(201)
             .send({ message: "Sucessfully Created A New Pizza" });
     } catch (error) {
@@ -102,7 +105,7 @@ var deletePizza = async (req, res) => {
     id = req.params.id;
 
     try {
-        if (await services.deleteOne(id)) {
+        if (await services.deletePizza(id)) {
             res.status(200)
                 .send({ message: "Successfully Deleted A Pizza" });
         } else {
@@ -128,11 +131,13 @@ var updatePizza = async (req, res) => {
     price = req.body.price;
 
     try {
-        if (await services.updateOne(id, category, price)) {
+        let check = await services.updatePizza(id, category, price);
+        if (check) {
             res.status(200)
                 .send({ message: "Sucessfully Updated A Pizza" });
         } else {
             res.status(400);
+            res.end();
         }
 
     } catch (error) {
@@ -149,7 +154,7 @@ var getOnePizza = async (req, res) => {
     }
     id = req.params.id;
     try {
-        var getOne = await services.getOne(id);
+        var getOne = await services.getOnePizza(id);
 
         if (getOne.length == 0) {
             res.status(400).send({ message: "No record" });
