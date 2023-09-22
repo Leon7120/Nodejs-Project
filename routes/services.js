@@ -1,34 +1,25 @@
 var db = require('../config/database');
 var crypto = require("crypto");
 
-var login = (username, password) => {
+// var login = (username, password) => {
 
-    return new Promise((resolve, reject) => {
-        query = "SELECT * FROM users WHERE u_username = ?";
-        db.query(query, username, (error, data) => {
-            if (error) {
-                reject(error);
-            }
-            if (data.length === 1 && (data[0].u_username === username)) {
-                let hashPassword = data[0].u_password;
-                if (validPassword(password, hashPassword)) {
-                    resolve(true);
-                }
-                resolve(false);
-            }
-        })
-
-    })
-}
-var isAuthenticated = (req, res, next) => {
-    if (req.session.user) {
-        next();
-    }
-    else {
-        throw Error("You are not Authorized");
-    }
-}
-var createUser = (username, password) => {
+//     return new Promise((resolve, reject) => {
+//         query = "SELECT * FROM users WHERE u_username = ?";
+//         db.query(query, username, (error, data) => {
+//             if (error) {
+//                 reject(error);
+//             }
+//             if (data.length === 1 && (data[0].u_username === username)) {
+//                 let hashPassword = data[0].u_password;
+//                 if (validPassword(password, hashPassword)) {
+//                     resolve(true);
+//                 }
+//                 resolve(false);
+//             }
+//         })
+//     })
+// }
+var register = (username, password) => {
 
     let query = "INSERT INTO users (u_id,u_username,u_password,u_createDate,u_status) VALUES (uuid(),?,?,CURDATE(),default)";
 
@@ -78,7 +69,7 @@ var createPizza = (category, price) => {
             throw Error(error);
         } else {
             if (result.affectedRows == 1) {
-                return result;
+                return true;
             }
         }
     })
@@ -146,9 +137,8 @@ var getOnePizza = (id) => {
 
 }
 module.exports = {
-    login,
-    isAuthenticated,
-    createUser,
+   // login,
+    register,
     getAll,
     createPizza,
     deletePizza,

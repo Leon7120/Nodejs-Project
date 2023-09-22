@@ -6,14 +6,15 @@ CREATE TABLE users (
     u_password varchar(255),
     u_createDate datetime NOT NULL,
     u_status boolean NOT NULL DEFAULT 1,
-
-    PRIMARY KEY (u_id)
+    CONSTRAINT ck_user
+    PRIMARY KEY (u_id,u_username)
 );
 CREATE TABLE Pizza (
     PizzaId int(5) NOT NULL AUTO_INCREMENT,
     Category varchar(30) UNIQUE,
     Price int NOT NULL,
-    PRIMARY KEY (PizzaId) 
+    CONSTRAINT ck_pizza
+    PRIMARY KEY (PizzaId,Category) 
 );
 
 INSERT INTO users (u_id,u_username,u_password,u_createDate,u_status) VALUES (uuid(),'654321','123456@Abc',CURDATE(),default);

@@ -1,57 +1,59 @@
 
-var services = require('./services');
+const services = require('./services');
 const { validationResult } = require("express-validator");
-// const passport = require('passport');
+
 
 var isAuthenticated = (req, res, next) => {
-    services.isAuthenticated;
-}
-var login = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ messsage : "Something wrong" });
+    if (req.isAuthenticated()) {
+        next();
     }
-    let username = req.body.username;
-    let password = req.body.password;
+    else {
+        res.send({ message: 'You Are Not Authorized' });
+    }
+}
+// var login = async (req, res) => {
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//         return res.status(400).json({ messsage: "Something wrong" });
+//     }
+//     let username = req.body.username;
+//     let password = req.body.password;
 
-    let returnUsername = await services.login(username, password);
-    if (returnUsername) {
-        req.session.regenerate(function (error) {
-            if (error) {              
-                res.status(400)
-                    .send({ message: " Something wrong" })
-                    .end();
-            }
-            //req.session.user = username;
-            res.status(200)
-                .send({ message: " Successfully Login" })
-                .end();
-                // .redirect('/user');
-        });
-    } else {
-        res.status(400)
-            .send({ message: "Something wrong with username or password!" })
-            .end();
-    }
-}
+//     let returnUsername = await services.login(username, password);
+//     if (returnUsername) {
+//         req.session.regenerate(function (error) {
+//             if (error) {
+//                 res.status(400)
+//                     .send({ message: " Something wrong" })
+//                     .end();
+//             }
+//             req.session.user = username;
+//             res.redirect('/v1/home')
+//         });
+//     } else {
+//         res.status(400)
+//             .send({ message: "Something wrong with username or password!" })
+//             .end();
+//     }
+// }
 var logout = (req, res, next) => {
     res.clearCookie('connect.sid');
     req.session.destroy();
-    res.end();
-
+    res.redirect('/v1');
 }
-var createUser = (req, res) => {
+var register = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array({ onlyFirstError: true }) });
+        return res.status(400).json({ messsage: "Something wrong" });
     }
     username = req.body.username;
     password = req.body.password;
 
     try {
-        services.createUser(username, password);
+        services.register(username, password);
         res.status(201)
-            .send({ message: "Sucessfully Created A New Account" });
+            .send("<h1>Sucessfully Registered A New Account</h1> <br> <a href ='/v1'>Back to Login</a>" )
+            .end();
     } catch (error) {
         res.status(error?.status || 500)
             .send({
@@ -62,9 +64,12 @@ var createUser = (req, res) => {
 }
 var getAll = async (req, res) => {
     try {
+        
+
         var getAll = await services.getAll();
         res.status(200)
             .send({ data: getAll });
+
 
     } catch (error) {
         res.status(error?.status || 500)
@@ -72,9 +77,6 @@ var getAll = async (req, res) => {
                 status: "FAILED", data: { error: error?.message || error }
             })
     }
-
-
-
 }
 var createPizza = (req, res) => {
     const errors = validationResult(req);
@@ -173,10 +175,10 @@ var getOnePizza = async (req, res) => {
     }
 }
 module.exports = {
-    login,
+   // login,
     isAuthenticated,
     logout,
-    createUser,
+    register,
     getAll,
     createPizza,
     deletePizza,

@@ -2,27 +2,55 @@ var express = require('express');
 var router = express.Router();
 var controller = require('./controller.js');
 var validator = require('./validator.js');
+const passport = require('../config/passport.js');
+const axios = require('axios');
 
+// app.get('/recipe/:fooditem', async (req, res) => {
+//   try {
+//     const fooditem = req.params.fooditem;
+//     const recipe = await axios.get(`http://www.recipepuppy.com/api/?q=${fooditem}`); 
+//      return res.status(200).send({
+//       error: false,
+//       data: recipe.data.results
+//     });
+   
+//   } catch (error) {
+//       console.log(error)
+//   }
+//  });
 
-/* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', {
-    title: 'Express',
+  res.render('login', {
+    title: 'Login Page',
+    messages: req.flash('msg')
   });
-
   // res.sendFile(__dirname + '/index.html');
 })
-
-router.get('/user', controller.isAuthenticated, function (req, res) {
-  res.render('user');
-  console.log(req.session.viewCount);
+router.get('/register', function (req, res, next) {
+  res.render('register', {
+    title: 'Register Page',
+  });
 })
 
-router.post('/user', validator.userValidator(), controller.createUser);
+router.get('/home', controller.isAuthenticated, function (req, res) {
+  res.render('home', { messages: req.flash('msg') });
+})
 
-router.post('/login', validator.userValidator(), controller.login);
+router.post('/register', validator.userValidator(), controller.register);
 
-router.get('/logout', controller.logout);
+router.post('/login', validator.userValidator(), passport.authenticate('local', { failureRedirect: '/v1' }), function (req, res) {
+  req.flash('msg', 'Welcome To Home');
+  res.redirect("/v1/home");
+});
+
+router.post('/logout', function (req, res, next) {
+ 
+  req.logout(function (err) {
+    if (err) { return next(err); }
+    req.flash('msg', "Successfully Logout");
+    res.redirect('/v1');
+  });
+});
 
 //CRUD API--------------------------------------------------------------------------------------------------------------
 router.get('/pizza', controller.getAll);

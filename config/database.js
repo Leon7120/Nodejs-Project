@@ -4,11 +4,13 @@ const mysql = require('mysql2');
 
 // Create MySQL connection
 const connection = mysql.createConnection({  
-    host: process.env.HOST,
-    user: process.env.USER,
-    password: process.env.DBPASSWORD,
-    database: process.env.DATABASE,
-    multipleStatements:false
+    port: process.env.MYSQL_PORT,
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    multipleStatements:false,
+    connectionLimit: 10
 });
 
 //Connect to MySQL
