@@ -1,5 +1,6 @@
 const createError = require('http-errors');
 const path = require('path');
+
 const logger = require('morgan');
 const express = require('express');
 const session = require('express-session');
@@ -10,6 +11,8 @@ require('dotenv').config()
 
 const indexRouter = require('./routes/index');
 const dataConnection = require('./config/database');
+const passport = require('passport');
+const flash = require('express-flash');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,6 +29,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
 
 const sessionStore = new MySQLStore({
   clearExpired: true,
@@ -43,13 +47,15 @@ const sessionStore = new MySQLStore({
 }/* session store options */, dataConnection);
 
 app.use(session({
-  secret: process.env.SESSION,
+  secret: process.env.NODE_SESSION_SECRETKEY,
   resave: false,
   store: sessionStore,
   saveUninitialized: true,
   cookie: { maxAge: 1000 * 60 * 60 * 24 }
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/v1', indexRouter);
 
