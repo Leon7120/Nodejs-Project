@@ -1,4 +1,3 @@
 /.env
-/.node_modules
-/.SQL
-/.route.rest
+SQL
+node_modules

@@ -3,18 +3,35 @@ const app = require('./routes/index');
 const request = require('supertest');
 
 
-describe('/GET user', () => {
-  it('it should Get all users', (done) => {
-    request(app)
+describe('/API Pizza', () => {
+  it(' Get all pizza', (done) => {
+    const response = request(app)
       .get('/pizza')
-      .expect(200)
-      done();
+    expect(200)
+    expect(response.status).toBe(200)
+    expect(response.body.data.length >= 1).toBe(true);
+    done();
   });
 
-  it('it should Get one users', (done) => {
+  it('Get one pizza', (done) => {
     request(app)
       .get('/pizza/1')
       .expect(200)
-      done();
+    done();
+  });
+
+  it('Post one pizza', (done) => {
+    request(app)
+      .post('/pizza')
+      .send({ category: "bbq", price: 30 })
+      .expect(200)
+    done();
+  });
+
+  it('Get one pizza', (done) => {
+    request(app)
+      .get('/pizza/1')
+      .expect(200)
+    done();
   });
 });

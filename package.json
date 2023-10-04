@@ -27,7 +27,8 @@
     "npx": "^10.2.2",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
-    "session": "^0.1.0"
+    "session": "^0.1.0",
+    "supertest": "^6.3.3"
   },
   "devDependencies": {
     "jest": "^29.7.0",
