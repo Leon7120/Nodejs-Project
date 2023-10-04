@@ -1,6 +1,0 @@
-
-GET http://localhost:3000/v1
-234567
-234567@Abc
-
-GET http://localhost:3000/v1/home
