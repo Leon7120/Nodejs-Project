@@ -1,4 +1,5 @@
 var db = require('../config/database');
+const pizzaModel = require('../models/pizza.model');
 var crypto = require("crypto");
 
 // var login = (username, password) => {
@@ -44,35 +45,44 @@ function validPassword(password, hashPassword) {
     var verifyHash = crypto.pbkdf2Sync(password, "salt", 10000, 64, 'sha512').toString('hex');
     return hashPassword === verifyHash;
 }
-var getAll = () => {
-    let query = "select * from pizza";
-    return new Promise((resolve, reject) => {
-        db.query(query, (error, result) => {
-            if (error) {
-                reject(error);
-            }
-            else {
-                resolve(result);
-            }
-        });
-    });
 
+
+const getAllPizza = async () => {
+    try{
+        const users = await pizzaModel.findAll()
+        if(!users){
+            return new Error("No user found!");
+        }else{
+            return users;
+        }
+    }catch(err){
+        return Error(err);
+    }
 }
 
-var createPizza = (category, price) => {
-
-    let query = "insert into Pizza(PizzaId,Category,Price) VALUES (default,?)";
-    let value = [category, price];
-
-    db.query(query, [value], (error, result) => {
-        if (error) {
-            throw Error(error);
-        } else {
-            if (result.affectedRows == 1) {
-                return true;
-            }
+var createPizza = async (body)=> {
+    let input = body;
+    try{
+        const check = await pizzaModel.create(input)
+        console.log(check);
+        if(check){
+            return check;
         }
-    })
+    }catch{
+        return Error(err);
+    }
+    // let query = "insert into Pizza(PizzaId,Category,Price) VALUES (default,?)";
+    // let value = [category, price];
+
+    // db.query(query, [value], (error, result) => {
+    //     if (error) {
+    //         throw Error(error);
+    //     } else {
+    //         if (result.affectedRows == 1) {
+    //             return true;
+    //         }
+    //     }
+    // })
 }
 
 var deletePizza = (id) => {
@@ -139,7 +149,7 @@ var getOnePizza = (id) => {
 module.exports = {
    // login,
     register,
-    getAll,
+    getAllPizza,
     createPizza,
     deletePizza,
     updatePizza,
