@@ -9,7 +9,9 @@ const app = express();
 const cors = require("cors");
 require('dotenv').config()
 
-const indexRouter = require('./routes/index');
+const loginRouter = require('./routes/login');
+const pizzaRouter = require('./routes/pizza');
+
 const dataConnection = require('./config/database');
 const passport = require('passport');
 const flash = require('express-flash');
@@ -57,7 +59,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/v1', indexRouter);
+app.use('/v1', loginRouter);
+app.use('/v1', pizzaRouter);
+
 
 // //catch 404 and forward to error handler
 // app.use(function(req, res, next) {

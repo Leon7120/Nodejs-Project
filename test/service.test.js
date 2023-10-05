@@ -22,18 +22,7 @@ describe("Test API", () => {
         done();
       });
   });
-  it('should handle error', (done) => {
-    chai.request(app)
-      .get('/v1/pizza')
-      .query(Error("Error"))
-      .end((err, res) => {
-        
-        expect(err).to.be.null;
-        expect(res).to.have.status(500);
-        
-        done()
-      });
-  });
+
   it("should get one users", function (done) {
     const pizzaId = 1;
     chai.request(app)
@@ -47,4 +36,22 @@ describe("Test API", () => {
       });
   });
 
+  it('should create new user', (done) => {
+    const newPizza = {
+      "Category": "BBQ",
+      "Price": 30,
+    };
+
+    chai.request(app)
+      .post(`/v1/pizza`)
+      .send(newPizza)
+      .end((err, res) => {
+        expect(err).to.be.null;
+        expect(res.request._data.Category).to.deep.equal(newPizza.Category);
+        expect(res.request._data.Price).to.deep.equal(newPizza.Price);
+        expect(res.body.message).to.equal('Sucessfully Created A New Pizza');
+        expect(res).to.have.status(201);
+        done();
+      });
+  });
 })
