@@ -10,14 +10,14 @@ CREATE TABLE users (
     PRIMARY KEY (u_id,u_username)
 );
 CREATE TABLE Pizza (
-    PizzaId int(5) NOT NULL AUTO_INCREMENT,
-    Category varchar(30) UNIQUE,
-    Price int NOT NULL,
+    pizzaId int NOT NULL AUTO_INCREMENT,
+    category varchar(30) UNIQUE,
+    price int NOT NULL,
     CONSTRAINT ck_pizza
-    PRIMARY KEY (PizzaId,Category) 
+    PRIMARY KEY (pizzaId,category) 
 );
 
 INSERT INTO users (u_id,u_username,u_password,u_createDate,u_status) VALUES (uuid(),'654321','123456@Abc',CURDATE(),default);
 
-INSERT INTO Pizza(PizzaId,Category,Price) VALUES (default,'hawaii', 20);
-INSERT INTO Pizza(PizzaId,Category,Price) VALUES (default,'mozallera', 25);
+INSERT INTO Pizza(pizzaId,category,price) VALUES (default,'hawaii', 20);
+INSERT INTO Pizza(pizzaId,category,price) VALUES (default,'mozallera', 25);

@@ -78,5 +78,10 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
+//redirect all invalid url to home page
+app.use(function(req, res) {
+  res.redirect('/v1')
+});
+
 
 module.exports = app;

@@ -3,9 +3,18 @@ const { validationResult } = require("express-validator");
 
 var getAllPizza = async (req, res) => {
     try {
-        var getAll = await services.getAllPizza();
-        res.status(200)
-            .send({ data: getAll });
+        if (Object.keys(req.query).length === 0) {
+            var getAll = await services.getAllPizza();
+        } else if (req.query.id || req.query.category || req.query.price) {
+            var getSpecificPizza = await services.getSpecificPizza(req.query);
+        }
+        if (getSpecificPizza || getAll) {
+            res.status(200)
+                .send({ data: getSpecificPizza || getAll });
+        } else {
+            res.status(400)
+                .send({ message: "No pizza found!" })
+        }
     } catch (error) {
         res.status(error?.status || 500)
             .send({
@@ -13,15 +22,20 @@ var getAllPizza = async (req, res) => {
             })
     }
 }
-var createPizza = (req, res) => {
+var createPizza = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array({ onlyFirstError: true }) });
     }
     try {
-        services.createPizza(req.body);
-        res.status(201)
-            .send({ message: "Sucessfully Created A New Pizza" });
+        const createPizza = await services.createPizza(req.body);
+        if (createPizza) {
+            res.status(201)
+                .send({ message: "Sucessfully Created A New Pizza" });
+        } else {
+            res.status(400)
+                .send({ message: "Nothing happnened" })
+        }
     } catch (error) {
         res.status(error?.status || 500)
             .send({
@@ -54,13 +68,13 @@ var updatePizza = async (req, res) => {
         return res.status(400).json({ errors: errors.array({ onlyFirstError: true }) });
     }
     try {
-        let check = await services.updatePizza(req.params.id, req.body.category, req.body.price);
-        if (check) {
+        let updatePizza = await services.updatePizza(req.params.id, req.body.category, req.body.price);
+        if (updatePizza) {
             res.status(200)
-                .send({ message: "Sucessfully Updated A Pizza" });
+                .send({ message: "Successfully updated the pizza details" })
         } else {
-            res.status(400);
-            res.end();
+            res.status(400)
+                .send({ message: "Nothing happened" })
         }
     } catch (error) {
         res.status(error?.status || 500)
@@ -75,14 +89,14 @@ var getOnePizza = async (req, res) => {
     }
     try {
         var getOne = await services.getOnePizza(req.params.id);
-        if (getOne.length == 0) {
-            res.status(400).send({ message: "No record" });
-        } else {
+        if (getOne) {
             res.status(200)
                 .send({ data: getOne });
+        } else {
+            res.status(400)
+                .send({ message: "No pizza found!" });
         }
     } catch (error) {
-        console.log(error);
         res.status(error?.status || 500)
             .send({
                 status: "FAILED", data: { error: error?.message || error }

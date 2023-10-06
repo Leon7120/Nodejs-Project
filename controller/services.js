@@ -1,6 +1,8 @@
 var db = require('../config/database');
 const pizzaModel = require('../models/pizza.model');
 var crypto = require("crypto");
+const sequelize = require("sequelize");
+const Op = sequelize.Op;
 
 // var login = (username, password) => {
 
@@ -48,28 +50,76 @@ function validPassword(password, hashPassword) {
 
 
 const getAllPizza = async () => {
-    try{
-        const users = await pizzaModel.findAll()
-        if(!users){
-            return new Error("No user found!");
-        }else{
-            return users;
+    try {
+        const pizza = await pizzaModel.findAll()
+        if (!pizza) {
+            return false;
+        } else {
+            return pizza;
         }
-    }catch(err){
-        return Error(err);
+    } catch (err) {
+        throw Error(err);
     }
 }
-
-var createPizza = async (body)=> {
-    let input = body;
-    try{
-        const check = await pizzaModel.create(input)
-        console.log(check);
-        if(check){
-            return check;
+const getSpecificPizza = async (query) => {
+    const whereParameter = {};
+    try {
+        if (query.id || query.category || query.price) {
+            whereParameter[Op.and] = [];
+            if (query.id) {
+                whereParameter[Op.and].push({
+                    pizzaId: { [Op.like]: query.id }
+                })
+            }
+            if (query.category) {
+                whereParameter[Op.and].push({
+                    category: { [Op.like]: query.category }
+                })
+            }
+            if (query.price) {
+                whereParameter[Op.and].push({
+                    price: { [Op.like]: query.price }
+                })
+            }
         }
-    }catch{
-        return Error(err);
+        const pizza = await pizzaModel.findAll(
+            {
+                where:
+                    whereParameter
+            })
+        if (pizza.length == 0 || pizza == null) {
+            return false;
+        } else {
+            return pizza;
+        }
+    } catch (err) {
+        throw Error(err);
+    }
+}
+const getOnePizza = async (id) => {
+    try {
+        const pizza = await pizzaModel.findOne({
+            where: { pizzaId: id }
+        })
+        if (!pizza) {
+            return false;
+        } else {
+            return pizza;
+        }
+    } catch (err) {
+        throw Error(err);
+    }
+}
+var createPizza = async (body) => {
+    let input = body;
+    try {
+        const check = await pizzaModel.create(input)
+        if (!check) {
+            return false
+        }
+        return true;
+    } catch {
+        throw Error(err);
     }
     // let query = "insert into Pizza(PizzaId,Category,Price) VALUES (default,?)";
     // let value = [category, price];
@@ -107,51 +157,30 @@ var deletePizza = (id) => {
     })
 }
 
-var updatePizza = (id, category, price) => {
+var updatePizza = async (id, reqCategory, reqPrice) => {
+    try {
+        const pizza = await pizzaModel.findByPk(id);
+        if (!pizza) {
+            return false
+        }
+        pizza.Category = reqCategory;
+        pizza.Price = reqPrice;
+        await pizza.save();
 
-    return new Promise((resolve, reject) => {
-
-        let query = "update pizza set category = ? , price = ? where pizzaId = ?";
-
-        db.query(query, [category, price, id], (error, result) => {
-            if (error) {
-                reject(error);
-            } else {
-                console.log(result.affectedRows);
-                if (result.affectedRows == 1) {
-                    resolve(true);
-                } else {
-                    resolve(false);
-                }
-            }
-        })
-    })
-
+        return true
+    } catch (error) {
+        throw Error(error);
+    }
 }
 
-var getOnePizza = (id) => {
 
-    return new Promise((resolve, reject) => {
-        const getId = id;
-        let query = "select * from pizza where PizzaId = ?";
-
-        db.query(query, getId, (error, result) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(result);
-            }
-        })
-    })
-
-
-}
 module.exports = {
-   // login,
+    // login,
     register,
     getAllPizza,
+    getOnePizza,
+    getSpecificPizza,
     createPizza,
     deletePizza,
     updatePizza,
-    getOnePizza
 };
