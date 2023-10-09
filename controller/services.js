@@ -111,14 +111,13 @@ const getOnePizza = async (id) => {
     }
 }
 var createPizza = async (body) => {
-    let input = body;
     try {
-        const check = await pizzaModel.create(input)
-        if (!check) {
-            return false
-        }
-        return true;
-    } catch {
+        return await pizzaModel.create({
+            "PizzaId": body.pizzaId,
+            "Category": body.category,
+            "Price": body.price
+        });
+    } catch (err) {
         throw Error(err);
     }
     // let query = "insert into Pizza(PizzaId,Category,Price) VALUES (default,?)";
@@ -135,38 +134,28 @@ var createPizza = async (body) => {
     // })
 }
 
-var deletePizza = (id) => {
+var deletePizza = async (id) => {
 
-    return new Promise((resolve, reject) => {
-        const deleteId = id;
-        const query = "delete from pizza where PizzaId = ?";
-
-        db.query(query, deleteId, (error, result) => {
-            if (error) {
-                reject(error);
-
-            } else {
-
-                if (result.affectedRows == 1) {
-                    resolve(true);
-                } else {
-                    resolve(false);
-                }
-            }
-        })
-    })
+    try {
+        const result = await pizzaModel.destroy({ where: { pizzaId: id } })
+        if (!result || result == 0) {
+            return false
+        } else {
+            return true
+        }
+    } catch (err) {
+        throw new Error(err);
+    }
 }
-
 var updatePizza = async (id, reqCategory, reqPrice) => {
     try {
-        const pizza = await pizzaModel.findByPk(id);
+        const pizza = await pizzaModel.findByPk(id)
         if (!pizza) {
             return false
         }
         pizza.Category = reqCategory;
         pizza.Price = reqPrice;
         await pizza.save();
-
         return true
     } catch (error) {
         throw Error(error);

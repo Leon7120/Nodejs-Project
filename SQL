@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS users,Pizza;
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     u_id varchar(36) NOT NULL UNIQUE,
     u_username varchar(50) UNIQUE,
     u_password varchar(255),
@@ -9,8 +9,8 @@ CREATE TABLE users (
     CONSTRAINT ck_user
     PRIMARY KEY (u_id,u_username)
 );
-CREATE TABLE Pizza (
-    pizzaId int NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS Pizza ( 
+    pizzaId int NOT NULL UNIQUE,
     category varchar(30) UNIQUE,
     price int NOT NULL,
     CONSTRAINT ck_pizza
@@ -19,5 +19,5 @@ CREATE TABLE Pizza (
 
 INSERT INTO users (u_id,u_username,u_password,u_createDate,u_status) VALUES (uuid(),'654321','123456@Abc',CURDATE(),default);
 
-INSERT INTO Pizza(pizzaId,category,price) VALUES (default,'hawaii', 20);
-INSERT INTO Pizza(pizzaId,category,price) VALUES (default,'mozallera', 25);
+INSERT INTO Pizza(pizzaId,category,price) VALUES (1,'hawaii', 20);
+INSERT INTO Pizza(pizzaId,category,price) VALUES (2,'mozallera', 25);

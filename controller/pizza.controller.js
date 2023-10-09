@@ -28,13 +28,10 @@ var createPizza = async (req, res) => {
         return res.status(400).json({ errors: errors.array({ onlyFirstError: true }) });
     }
     try {
-        const createPizza = await services.createPizza(req.body);
+        const createPizza = await services.createPizza(req.body)
         if (createPizza) {
             res.status(201)
-                .send({ message: "Sucessfully Created A New Pizza" });
-        } else {
-            res.status(400)
-                .send({ message: "Nothing happnened" })
+                .send({ message: "Successfully Created A New Pizza" });
         }
     } catch (error) {
         res.status(error?.status || 500)
@@ -42,18 +39,19 @@ var createPizza = async (req, res) => {
                 status: "FAILED", data: { error: error?.message || error }
             })
     }
-
 }
 var deletePizza = async (req, res) => {
     if (!req.params.id) {
         res.status(400).send({ Error: "Something is Wrong" });
     }
     try {
-        if (await services.deletePizza(req.params.id)) {
-            res.status(204)
+        const deletePizza = await services.deletePizza(req.params.id);
+        if (deletePizza) {
+            res.status(200)
                 .send({ message: "Successfully Deleted A Pizza" });
         } else {
-            res.status(204)
+            res.status(200)
+                .send({ message: "Nothing Happened" });
         }
     } catch (error) {
         res.status(error?.status || 500)
@@ -74,7 +72,7 @@ var updatePizza = async (req, res) => {
                 .send({ message: "Successfully updated the pizza details" })
         } else {
             res.status(400)
-                .send({ message: "Nothing happened" })
+                .send({ message: "Something wrong!" })
         }
     } catch (error) {
         res.status(error?.status || 500)

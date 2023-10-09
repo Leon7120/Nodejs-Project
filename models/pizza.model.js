@@ -5,16 +5,15 @@ const pizza = db.sequelize.define('Pizza', {
     PizzaId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true
     },
     Category: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     Price: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
     },
     
 }, {

@@ -22,7 +22,7 @@ router.get('/pizza', controller.getAllPizza);
 router.get('/pizza/:id', controller.getOnePizza);
 router.post('/pizza', validator.pizzaValidator(), controller.createPizza);
 router.delete('/pizza/:id', controller.deletePizza);
-router.put('/pizza/:id', validator.updateValidator(), controller.updatePizza);
+router.patch('/pizza/:id', validator.updateValidator(), controller.updatePizza);
 
 router.get('/pizza/*', function(req,res){
     res.redirect('/');
