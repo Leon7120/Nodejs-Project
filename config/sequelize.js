@@ -11,7 +11,6 @@ const sequelize = new Sequelize(
          underscore: true, //Universal model config;
        }
     }
-    
   );
 
 sequelize.authenticate().then(() => {

@@ -51,7 +51,7 @@ function validPassword(password, hashPassword) {
 
 const getAllPizza = async () => {
     try {
-        const pizza = await pizzaModel.findAll()
+        const pizza = await pizzaModel.findAll();
         if (!pizza) {
             return false;
         } else {
@@ -135,7 +135,6 @@ var createPizza = async (body) => {
 }
 
 var deletePizza = async (id) => {
-
     try {
         const result = await pizzaModel.destroy({ where: { pizzaId: id } })
         if (!result || result == 0) {
@@ -161,8 +160,6 @@ var updatePizza = async (id, reqCategory, reqPrice) => {
         throw Error(error);
     }
 }
-
-
 module.exports = {
     // login,
     register,

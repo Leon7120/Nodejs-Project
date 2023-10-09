@@ -36,7 +36,7 @@ describe("Test API", () => {
       });
   });
 
-  it("should not specific pizza with query", function (done) {
+  it("should not get specific pizza with query", function (done) {
     chai.request(app)
       .get('/v1/pizza')
       .query({ pizzaId: 2, category: "Test", price: 50 })
