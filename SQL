@@ -1,23 +1,29 @@
-DROP TABLE IF EXISTS users,Pizza;
+DROP TABLE IF EXISTS User,Pizza;
 
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS User (
     u_id varchar(36) NOT NULL UNIQUE,
     u_username varchar(50) UNIQUE,
     u_password varchar(255),
-    u_createDate datetime NOT NULL,
+    u_create_date datetime NOT NULL,
     u_status boolean NOT NULL DEFAULT 1,
-    CONSTRAINT ck_user
-    PRIMARY KEY (u_id,u_username)
+    PRIMARY KEY (u_id)
 );
 CREATE TABLE IF NOT EXISTS Pizza ( 
-    pizzaId int NOT NULL UNIQUE,
-    category varchar(30) UNIQUE,
-    price int NOT NULL,
-    CONSTRAINT ck_pizza
-    PRIMARY KEY (pizzaId,category) 
+    p_id int NOT NULL UNIQUE,
+    p_category varchar(30)  NOT NULL UNIQUE,
+    p_price int NOT NULL,
+    PRIMARY KEY (p_id)
 );
 
-INSERT INTO users (u_id,u_username,u_password,u_createDate,u_status) VALUES (uuid(),'654321','123456@Abc',CURDATE(),default);
+INSERT INTO User (u_id,u_username,u_password,u_createDate,u_status) VALUES (uuid(),'654321','123456@Abc',CURDATE(),default);
+INSERT INTO User (u_id,u_username,u_password,u_createDate,u_status) VALUES (1,'654321','123456@Abc',CURDATE(),default);
 
-INSERT INTO Pizza(pizzaId,category,price) VALUES (1,'hawaii', 20);
-INSERT INTO Pizza(pizzaId,category,price) VALUES (2,'mozallera', 25);
+INSERT INTO Pizza(p_id,p.category,p.price) VALUES (1,'hawaii', 20);
+INSERT INTO Pizza(p_id,p.category,p.price) VALUES (2,'mozallera', 25);
+
+
+
+
+
+
+

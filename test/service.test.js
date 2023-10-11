@@ -5,7 +5,6 @@ const app = require("../app");
 chai.use(chaiHttp);
 
 describe("Test API", () => {
-
   it("Check", function (done) {
     expect(true).to.be.true;
     expect(false).to.be.equal(false);
