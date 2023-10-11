@@ -70,8 +70,14 @@ INSERT INTO OrderDetails VALUES(1,1,1,1,1),(2,2,1,1,1),(3,2,2,2,2),(4,2,2,1,2);
 INSERT INTO Payment VALUES(1,50,3,NOW(),DEFAULT,1,1);
 INSERT INTO History VALUES(1,1,1,1);
 
-SELECT odetail.o_id,odetail.o_detail_id,odetail.o_detail_quantity,pizza_price,
-pizza_category,t.t_price,t.t_name,o.o_date,
+
+-- o_id o_detail_id o_detail_quantity pizza_price pizza_category t_price t_name o_date Total Price
+-- 1	1	1	20	hawaii	2	cheese	2023-10-11 00:00:00	22
+-- 1	2	2	20	hawaii	2	cheese	2023-10-11 00:00:00	42
+-- 2	4	2	25	mozallera	2	cheese	2023-10-11 00:00:00	52
+-- 2	3	2	25	mozallera	3	ham	2023-10-11 00:00:00	53
+SELECT odetail.o_id,odetail.o_detail_id,odetail.o_detail_quantity,p.pizza_price,
+p.pizza_category,t.t_price,t.t_name,o.o_date,
 (pizza_price * odetail.o_detail_quantity) + t.t_price AS "Total Price"
 FROM OrderDetails odetail
 INNER JOIN pizza p ON odetail.pizza_id = p.pizza_id
@@ -79,6 +85,9 @@ INNER JOIN `order` o ON odetail.o_id = o.o_id
 INNER JOIN topping t ON odetail.t_id = t.t_id
 ORDER BY odetail.o_id;
 
+-- Order ID	Total Quantity	Total Price	Order Date
+-- 1	    3	            64	        10/11/2023 0:00
+-- 2	    4	            105	        10/11/2023 0:00
 SELECT pricePerPizza.o_id AS "Order ID",
 SUM(pricePerPizza.o_detail_quantity) AS "Total Quantity",
 SUM(pricePerPizza.`Pizza Price`) AS "Total Price",
