@@ -4,7 +4,6 @@
 <head></head>
 
 <body>
-
     <% if (messages.length> 0) { %>
         <div class="flash-messages">
             <% messages.forEach(message=> { %>
@@ -14,18 +13,13 @@
                 <% }); %>
         </div>
         <% } %>
-
             <form action="http://localhost:3000/v1/logout" method="post"><button>Logout</button></form>
-
             <div>
                 <div><a href="/v1/pizza">Get All Pizza</a></div>
                 <div><a href="">Get One Pizza</a></div>
                 <div><a href="">Update</a></div>
                 <div><a href="">Delete</a></div>
             </div>
-
-
-
 </body>
 
 </html>

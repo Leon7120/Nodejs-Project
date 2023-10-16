@@ -1,37 +1,20 @@
-<!DOCTYPE html>
-<html>
+<%- include ('./header.ejs')%>
+    <div class="login-form">
+        <form method="post" action="http://localhost:3000/v1/login" id="form">
+            <p>
+                <label for="username">Username</label>
+                <input type="text" name="username" required placeholder="User ID">
+            </p>
+            <p>
+                <label for="password">Password</label>
+                <input type="password" name="password" type="password" required placeholder="Password">
+            </p>
+            <p>
+                <input type="submit" value="login">
+            </p>
 
-<head>
-  <title>
-    <%= title %>
-  </title>
-
-</head>
-
-<body>
-  <% if (messages.length> 0) { %>
-    <div class="flash-messages">
-        <% messages.forEach(message=> { %>
-            <div class="flash-message">
-                <%= message %>
-            </div>
-            <% }); %>
+        </form>
     </div>
-    <% } %>
-    
-  <form method="post" action="http://localhost:3000/v1/login" id="form">
-    <label>Username</label>
-    <input type="text" name="username" required placeholder="User ID">
-    <label>Password</label>
-    <input type="password" name="password" type="password" required placeholder="Password">
-    <input type="submit" value="login">
-  </form>
+    <a href="/v1/register"><b>Register</b></a>
 
-  <a href="/v1/register">
-    <button><b>Register</b></button>
-  </a>
-  <link rel='stylesheet' href='/stylesheets/style.css' />
-
-</body>
-
-</html>
+    <%- include ('./footer.ejs')%>

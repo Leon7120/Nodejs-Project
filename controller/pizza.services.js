@@ -1,53 +1,6 @@
-var db = require('../config/database');
 const pizzaModel = require('../models/pizza.model');
-var crypto = require("crypto");
 const sequelize = require("sequelize");
 const Op = sequelize.Op;
-
-// var login = (username, password) => {
-
-//     return new Promise((resolve, reject) => {
-//         query = "SELECT * FROM users WHERE u_username = ?";
-//         db.query(query, username, (error, data) => {
-//             if (error) {
-//                 reject(error);
-//             }
-//             if (data.length === 1 && (data[0].u_username === username)) {
-//                 let hashPassword = data[0].u_password;
-//                 if (validPassword(password, hashPassword)) {
-//                     resolve(true);
-//                 }
-//                 resolve(false);
-//             }
-//         })
-//     })
-// }
-var register = (username, password) => {
-
-    let query = "INSERT INTO users (u_id,u_username,u_password,u_createDate,u_status) VALUES (uuid(),?,?,CURDATE(),default)";
-
-    var hashPassword = genPassword(password);
-
-    db.query(query, [username, hashPassword], (error, result) => {
-        if (error) {
-            throw Error(error);
-        } else {
-            if (result.affectedRows == 1) {
-                return result;
-            }
-        }
-    })
-}
-function genPassword(password) {
-    //var salt = crypto.randomBytes(32).toString('hex');
-    var genHash = crypto.pbkdf2Sync(password, "salt", 10000, 64, 'sha512').toString('hex');
-    return genHash;
-}
-function validPassword(password, hashPassword) {
-    var verifyHash = crypto.pbkdf2Sync(password, "salt", 10000, 64, 'sha512').toString('hex');
-    return hashPassword === verifyHash;
-}
-
 
 const getAllPizza = async () => {
     try {
@@ -161,8 +114,6 @@ var updatePizza = async (id, reqCategory, reqPrice) => {
     }
 }
 module.exports = {
-    // login,
-    register,
     getAllPizza,
     getOnePizza,
     getSpecificPizza,
