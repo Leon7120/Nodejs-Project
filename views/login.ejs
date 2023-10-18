@@ -1,20 +1,20 @@
 <%- include ('./header.ejs')%>
-    <div class="login-form">
-        <form method="post" action="http://localhost:3000/v1/login" id="form">
-            <p>
-                <label for="username">Username</label>
-                <input type="text" name="username" required placeholder="User ID">
-            </p>
-            <p>
-                <label for="password">Password</label>
-                <input type="password" name="password" type="password" required placeholder="Password">
-            </p>
-            <p>
-                <input type="submit" value="login">
-            </p>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 
+    <div class="login-form">
+        <form>
+            <label for="username">Username</label>
+            <input type="text" name="username"><br>
+            <label for="password">Password</label>
+            <input type="password" name="password">
+            <br>
+            <input type="checkbox" id="checkbox-1-1" />
+            <label for="checkbox-1-1">Keep me Signed in</label>
+            <button class="signin">Sign In</button>
+            <hr>
+            <a href="#">Forgot Password?</a>
         </form>
+
     </div>
-    <a href="/v1/register"><b>Register</b></a>
 
     <%- include ('./footer.ejs')%>
