@@ -22,10 +22,15 @@ var register = (req, res) => {
         return res.status(400).json({ messsage: "Something wrong" });
     }
     try {
-        services.register(req.body.username, req.body.password);
-        res.status(201)
-            .send("<h1>Sucessfully Registered A New Account</h1> <br> <a href ='/v1'>Back to Login</a>")
-            .end();
+        if (services.register(req.body.username, req.body.password)) {
+            res.status(201)
+                .send("<h1>Sucessfully Registered A New Account</h1> <br> <a href ='/v1'>Back to Login</a>")
+                .end();
+        }else{
+            res.status(401)
+            .send({"message" : "something wrong!"})
+            .end(); 
+        }
     } catch (error) {
         res.status(error?.status || 500)
             .send({

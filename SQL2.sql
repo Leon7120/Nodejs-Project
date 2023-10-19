@@ -1,12 +1,34 @@
-DROP TABLE IF EXISTS User,Pizza,`Order`,OrderDetails,History,Payment,Topping;
+DROP TABLE IF EXISTS User,Role,Role_Permission,Permission,Pizza,`Order`,OrderDetails,History,Payment,Topping;
 
+CREATE TABLE IF NOT EXISTS Role ( 
+    role_id int NOT NULL UNIQUE,
+    role_title varchar(30)  NOT NULL UNIQUE,
+    role_action int NOT NULL DEFAULT 1,
+    PRIMARY KEY (role_id)
+);
 CREATE TABLE IF NOT EXISTS User (
     u_id varchar(36) NOT NULL UNIQUE,
     u_username varchar(50) UNIQUE,
     u_password varchar(255),
     u_create_date datetime NOT NULL,
     u_status boolean NOT NULL DEFAULT 1,
+    role_id int,
+    FOREIGN KEY(role_id) REFERENCES Role(role_id),
     PRIMARY KEY (u_id)
+);
+CREATE TABLE IF NOT EXISTS Permission ( 
+    permission_id int NOT NULL UNIQUE,
+    permission_title varchar(30)  NOT NULL UNIQUE,
+    permission_description varchar(255),
+    permission_action int NOT NULL DEFAULT 1,
+    PRIMARY KEY (permission_id)
+);
+CREATE TABLE IF NOT EXISTS Role_Permission (
+	role_id int NOT NULL,
+    permission_id int NOT NULL,
+    FOREIGN KEY (role_id) REFERENCES Role(role_id),
+    FOREIGN KEY (permission_id) REFERENCES Permission(permission_id),
+    CONSTRAINT role_permission PRIMARY KEY (role_id,permission_id)
 );
 CREATE TABLE IF NOT EXISTS Pizza ( 
     pizza_id int NOT NULL UNIQUE,
@@ -61,8 +83,12 @@ CREATE TABLE IF NOT EXISTS History (
     FOREIGN KEY(o_id) REFERENCES `Order`(o_id)
 );
 
-INSERT INTO User VALUES (uuid(),'654321','123456@Abc',CURDATE(),default),
-(1,'987654','123456@Abc',CURDATE(),default);
+INSERT INTO Role VALUES(1,"admin",default),(2,"manager",default),(3,"employee",default);
+INSERT INTO User VALUES (uuid(),'654321','123456@Abc',CURDATE(),default,1),
+(1,'987654','123456@Abc',CURDATE(),default,2);
+INSERT INTO Permission VALUES(1,"edit","Allow to edit",default),
+(2,"delete","Allow to delete",default),(3,"create","Allow to create",default);
+INSERt INTO Role_Permission VALUES(1,1),(1,2),(1,3),(2,1),(2,3);
 INSERT INTO Pizza VALUES (1,'hawaii', 20),(2,'mozallera', 25);
 INSERT INTO Topping VALUES(1,"cheese",2),(2,"ham",3);
 INSERT INTO `Order`(o_id,o_date,u_id) VALUES(1,NOW(),1),(2,NOW(),1);
@@ -71,7 +97,7 @@ INSERT INTO Payment VALUES(1,50,3,NOW(),DEFAULT,1,1);
 INSERT INTO History VALUES(1,1,1,1);
 
 
--- o_id o_detail_id o_detail_quantity pizza_price pizza_category t_price t_name o_date Total Price
+-- o_id o_detail_id o_detail_quantity pizza_price pizza_category t_price t_name o_date
 -- 1	1	1	20	hawaii	2	cheese	2023-10-11 00:00:00	22
 -- 1	2	2	20	hawaii	2	cheese	2023-10-11 00:00:00	42
 -- 2	4	2	25	mozallera	2	cheese	2023-10-11 00:00:00	52
@@ -101,7 +127,14 @@ INNER JOIN pizza p ON odetail.pizza_id = p.pizza_id
 INNER JOIN `order` o ON odetail.o_id = o.o_id
 INNER JOIN topping t ON odetail.t_id = t.t_id
 ORDER BY odetail.o_id) AS pricePerPizza
-GROUP BY pricePerPizza.o_id
+GROUP BY pricePerPizza.o_id;
+
+select u.u_id,u.u_username,r.role_title,p.permission_description from User u 
+join Role r on u.role_id = r.role_id 
+join Role_Permission rp on r.role_id = rp.role_id
+join Permission p on rp.permission_id = p.permission_id;
+
+
 
 
 

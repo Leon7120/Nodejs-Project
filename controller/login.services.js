@@ -8,10 +8,12 @@ var register = (username, password) => {
     var hashPassword = genPassword(password);
     db.query(query, [username, hashPassword], (error, result) => {
         if (error) {
-            throw Error(error);
+            throw new Error(error);
         } else {
             if (result.affectedRows == 1) {
                 return result;
+            }else{
+                return false;
             }
         }
     })

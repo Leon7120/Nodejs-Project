@@ -20,7 +20,9 @@ router.get('/home', controller.isAuthenticated, function (req, res) {
   res.render('home', { messages: req.flash('msg') });
 })
 
-router.post('/register', validator.userValidator(), controller.register);
+// router.post('/register', validator.userValidator(), controller.register);
+router.post('/register',  controller.register);
+
 
 router.post('/login', validator.userValidator(),
   passport.authenticate('local', {

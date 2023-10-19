@@ -1,4 +1,4 @@
-const services = require('./login.services');
+const services = require('./pizza.services');
 const { validationResult } = require("express-validator");
 
 var getAllPizza = async (req, res) => {

@@ -5,7 +5,7 @@ const crypto = require("crypto");
 
 
 passport.use(new LocalStrategy(function verify(username, password, callback) {
-    db.query('SELECT * FROM users WHERE u_username = ?', [username], (err, user) => {
+    db.query('SELECT * FROM user WHERE u_username = ?', [username], (err, user) => {
         if(err){
             callback(err);
         }
