@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS User (
     u_id varchar(36) NOT NULL UNIQUE,
     u_username varchar(50) UNIQUE,
     u_password varchar(255),
-    u_create_date datetime NOT NULL,
+    u_createDate datetime NOT NULL,
     u_status boolean NOT NULL DEFAULT 1,
     PRIMARY KEY (u_id)
 );
@@ -15,15 +15,6 @@ CREATE TABLE IF NOT EXISTS Pizza (
     PRIMARY KEY (p_id)
 );
 
-INSERT INTO User (u_id,u_username,u_password,u_createDate,u_status) VALUES (uuid(),'654321','123456@Abc',CURDATE(),default);
-INSERT INTO User (u_id,u_username,u_password,u_createDate,u_status) VALUES (1,'654321','123456@Abc',CURDATE(),default);
+INSERT INTO User VALUES (uuid(),'654321','123456@Abc',NOW(),default),(1,'123456','123456@Abc',NOW(),default);
 
-INSERT INTO Pizza(p_id,p.category,p.price) VALUES (1,'hawaii', 20);
-INSERT INTO Pizza(p_id,p.category,p.price) VALUES (2,'mozallera', 25);
-
-
-
-
-
-
-
+INSERT INTO Pizza VALUES (1,'hawaii', 20),(2,'mozallera', 25);

@@ -23,7 +23,6 @@ router.get('/home', controller.isAuthenticated, function (req, res) {
 // router.post('/register', validator.userValidator(), controller.register);
 router.post('/register',  controller.register);
 
-
 router.post('/login', validator.userValidator(),
   passport.authenticate('local', {
     successRedirect: '/v1/home',

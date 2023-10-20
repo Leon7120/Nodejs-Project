@@ -79,7 +79,7 @@ app.use(function (err, req, res, next) {
 });
 
 //redirect all invalid url to home page
-app.use(function(req, res) {
+app.use(function (req, res) {
   res.redirect('/v1')
 });
 

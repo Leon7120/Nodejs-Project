@@ -19,23 +19,24 @@ const checkAuthenticated = (req, res, next) => {
 var register = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ messsage: "Something wrong" });
+        return res.status(400).json({ messsage: "Inputs did not match the format." });
     }
     try {
-        if (services.register(req.body.username, req.body.password)) {
-            res.status(201)
-                .send("<h1>Sucessfully Registered A New Account</h1> <br> <a href ='/v1'>Back to Login</a>")
-                .end();
-        }else{
-            res.status(401)
-            .send({"message" : "something wrong!"})
-            .end(); 
-        }
+        services.register(req.body.username, req.body.password, (error, result) => {
+            if (error) {
+                console.log(error);
+                res.status(409)
+                    .send(error)
+                    .end();
+            } else {
+                res.status(201)
+                    .send("Sucessfully Registered A New Account")
+                    .end();
+            }
+        });
     } catch (error) {
-        res.status(error?.status || 500)
-            .send({
-                status: "FAILED", data: { error: error?.message || error }
-            })
+        res.send(error);
+        console.log(error);
     }
 }
 
