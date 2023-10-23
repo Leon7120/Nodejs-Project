@@ -2,16 +2,16 @@ const { DataTypes } = require('sequelize');
 const db = require('../config/sequelize');
 
 const pizza = db.sequelize.define('Pizza', {
-    PizzaId: {
+    P_Id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true
     },
-    Category: {
+    P_Category: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    Price: {
+    P_Price: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },

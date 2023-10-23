@@ -14,7 +14,6 @@ const pizzaRouter = require('./routes/pizza');
 
 const dataConnection = require('./config/database');
 const passport = require('passport');
-const flash = require('express-flash');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,7 +30,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(flash());
+
 
 const sessionStore = new MySQLStore({
   clearExpired: true,

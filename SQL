@@ -2,8 +2,8 @@ DROP TABLE IF EXISTS User,Pizza;
 
 CREATE TABLE IF NOT EXISTS User (
     u_id varchar(36) NOT NULL UNIQUE,
-    u_username varchar(50) UNIQUE,
-    u_password varchar(255),
+    u_username varchar(50) UNIQUE NOT NULL,
+    u_password varchar(255) NOT NULL,
     u_createDate datetime NOT NULL,
     u_status boolean NOT NULL DEFAULT 1,
     PRIMARY KEY (u_id)
@@ -16,5 +16,5 @@ CREATE TABLE IF NOT EXISTS Pizza (
 );
 
 INSERT INTO User VALUES (uuid(),'654321','123456@Abc',NOW(),default),(1,'123456','123456@Abc',NOW(),default);
-
 INSERT INTO Pizza VALUES (1,'hawaii', 20),(2,'mozallera', 25);
+

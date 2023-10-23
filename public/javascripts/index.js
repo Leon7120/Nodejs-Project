@@ -1,10 +1,10 @@
-
-
-
-const loginForm = document.getElementById('sign-in-form');
+const signInForm = document.getElementById('sign-in-form');
 const signUpForm = document.getElementById('sign-up-form');
 const signInButton = document.getElementById('sign-in-button');
 const signUpButton = document.getElementById('sign-up-button');
+const url = "http://localhost:3000/v1"
+
+
 
 signInButton.addEventListener('click', () => {
     loginForm.style.display = 'block';
@@ -15,26 +15,57 @@ signUpButton.addEventListener('click', () => {
     signUpForm.style.display = 'block';
 });
 
-const url = "http://localhost:3000/v1"
 signUpForm.addEventListener('submit', (e) => {
     e.preventDefault();
     var user = document.getElementById("sign-up-username").value;
     var pw = document.getElementById("sign-up-password").value;
+    var message = document.getElementById("message");
+
     fetch(url + '/register', {
         method: 'POST',
         body: JSON.stringify({
             username: user,
             password: pw,
-        }), headers: {
+        }),
+        headers: {
             'Content-type': 'application/json; charset=UTF-8',
         }
     }).then(function (res) {
         return res.json();
-    }).then(function (message) {
-        console.log(message);
+    }).then(function (msg) {
+        message.innerHTML = msg.message;
+        console.log(msg);
     }).catch(err => {
         alert(err);
     })
+
+    signUpForm.reset();
+});
+
+signInForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    var user = document.getElementById("sign-in-username").value;
+    var pw = document.getElementById("sign-in-password").value;
+    var message = document.getElementById("message");
+
+    fetch(url + '/login', {
+        method: 'POST',
+        redirect: "manual",
+        body: JSON.stringify({
+            username: user,
+            password: pw,
+        }),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        }
+    }).then((res) =>{
+        console.log(res.data);
+        return res.data;
+    }).catch(err => {
+        alert(err);
+    })
+    
+    signInForm.reset();
 });
 
 var pizzaUrl = 'http://localhost:3000/v1/pizza';

@@ -1,41 +1,39 @@
 <%- include ('./header.ejs')%>
-    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+                    <div class="sign-in-sign-up-div">
+                        <div class="sign-in-sign-up-button">
+                            <button id="sign-in-button" class="sign-in-button"> Sign In</button>
+                            <button id="sign-up-button" class="sign-up-button">Sign Up</button>
+                        </div>
+                    <div class="message" id="message"></div>
 
-    <div class="sign-in-sign-up-div">
-        <div class="sign-in-sign-up-button">
-            <button id="sign-in-button" class="sign-in-button"> Sign In</button>
-            <button id="sign-up-button" class="sign-up-button">Sign Up</button>
-        </div>
+                        <form class="sign-in-form" id="sign-in-form" autocomplete="off">
+                            <div class="sign-in-input">
+                                <input type="text" id="sign-in-username" name="username">
+                                <label for="username">Username</label>
+                            </div>
+                            <div class="sign-in-input">
+                                <input type="password" id="sign-in-password" name="password">
+                                <label for="password">Password</label>
+                            </div>
+                            <input type="checkbox" class="checkbox-1-1" />
+                            <label for="checkbox-1-1">Keep me Signed in</label>
+                            <button class="login" button="submit">Login</button>
+                            <hr>
+                            <a href="#">Forgot Password?</a>
+                        </form>
 
-        <form class="sign-in-form" id="sign-in-form" action="http://localhost:3000/v1/login" method="post">
-            <div class="sign-in-input">
-                <input type="text" name="username">
-                <label for="username">Username</label>
-            </div>
-            <div class="sign-in-input">
-                <input type="password" name="password">
-                <label for="password">Password</label>
-            </div>
-            <input type="checkbox" class="checkbox-1-1" />
-            <label for="checkbox-1-1">Keep me Signed in</label>
-            <button class="login" button="submit">Login</button>
-            <hr>
-            <a href="#">Forgot Password?</a>
-        </form>
+                        <form class="sign-up-form" id="sign-up-form" autocomplete="off">
+                            <div class="sign-up-input">
+                                <input type="text" id="sign-up-username">
+                                <label for="username">Username</label>
+                            </div>
+                            <div class="sign-up-input">
+                                <input type="password" id="sign-up-password">
+                                <label for="password">Password</label>
+                            </div>
+                            <button class="register" type="submit">Register</button>
+                        </form>
+                        <button class="login" id="get">Get</button>
+                    </div>
 
-        <form class="sign-up-form" id="sign-up-form">
-            <div class="sign-up-input">
-                <input type="text" id="sign-up-username">
-                <label for="username">Username</label>
-            </div>
-            <div class="sign-up-input">
-                <input type="password" id="sign-up-password">
-                <label for="password">Password</label>
-            </div>
-            <button class="register" type="submit">Register</button>
-        </form>
-
-            <button class="login" id="get">Get</button>
-    </div>
-
-    <%- include ('./footer.ejs')%>
+                    <%- include ('./footer.ejs')%>

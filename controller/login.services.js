@@ -1,7 +1,5 @@
 var db = require('../config/database');
 var crypto = require("crypto");
-const sequelize = require("sequelize");
-const Op = sequelize.Op;
 
 var register = (username, password, callback) => {
     let query = "INSERT INTO User VALUES (uuid(),?,?,NOW(),default)";
@@ -10,10 +8,10 @@ var register = (username, password, callback) => {
         if (error) {
             callback(error);
         } else {
-            if (result.affectedRows == 1) {
+            if (result.affectedRows === 1) {
+                console.log("What happened");
                 callback(null, result);
             } else {
-                console.log(result);
                 callback(new Error('Insert operation failed'));
             }
         }

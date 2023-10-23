@@ -3,24 +3,24 @@ const LocalStrategy = require("passport-local");
 const db = require('../config/database');
 const crypto = require("crypto");
 
-
 passport.use(new LocalStrategy(function verify(username, password, callback) {
-    db.query('SELECT * FROM user WHERE u_username = ?', [username], (err, user) => {
-        if(err){
-            callback(err);
-        }
-            if (!user) {
-                return callback(null, false, {
-                    message: 'Incorrect username or password.'
-                });
+    try {
+        db.query('SELECT * FROM user WHERE u_username = ?', [username], (err, user) => {
+            if (err) {
+                return callback(err);
             }
-            let hash = user[0].u_password;  
-            if (!validPassword(password, hash)) {
-                return callback(null, false, { message: 'Incorrect username or password.' });
+            if (!user || user.length == 0) {
+                return callback(null, false, ({ message: 'No account exists for that email!' }));
+            } else {
+                if (!validPassword(password, user[0].u_password)) {
+                    return callback(null, false, ({ message: 'Something Wrong.' }));
+                }
             }
-            return callback(null, user);
-
-    });
+            return callback(null, user, ({ message: 'Successfully Login.' }));
+        });
+    } catch (err) {
+        return callback(null, false, ({ message: 'Error' }));
+    }
 }));
 function validPassword(password, hashPassword) {
     var verifyHash = crypto.pbkdf2Sync(password, "salt", 10000, 64, 'sha512').toString('hex');
