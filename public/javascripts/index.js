@@ -4,9 +4,9 @@ const signInButton = document.getElementById('sign-in-button');
 const signUpButton = document.getElementById('sign-up-button');
 const url = "http://localhost:3000/v1"
 
+if(signInButton){
 
-
-signInButton.addEventListener('click', () => {
+  signInButton.addEventListener('click', () => {
     signInForm.style.display = 'block';
     signUpForm.style.display = 'none';
 });
@@ -14,7 +14,6 @@ signUpButton.addEventListener('click', () => {
     signInForm.style.display = 'none';
     signUpForm.style.display = 'block';
 });
-
 signUpForm.addEventListener('submit', (e) => {
     e.preventDefault();
     var user = document.getElementById("sign-up-username").value;
@@ -41,7 +40,6 @@ signUpForm.addEventListener('submit', (e) => {
 
     signUpForm.reset();
 });
-
 signInForm.addEventListener('submit', (e) => {
     e.preventDefault();
     var user = document.getElementById("sign-in-username").value;
@@ -67,14 +65,12 @@ signInForm.addEventListener('submit', (e) => {
             message.innerHTML = msg.message;
             console.log(msg);
         }
-
     }).catch(err => {
         throw (err);
     })
 
     signInForm.reset();
 });
-
 var pizzaUrl = 'http://localhost:3000/v1/pizza';
 const get = document.getElementById("get");
 get.addEventListener('click', (event) => {
@@ -87,10 +83,11 @@ get.addEventListener('click', (event) => {
             return response.json();  // This returns a promise
         })
         .then(data => {
-            // Now we have the data
             console.log(data);
         })
         .catch(error => {
             console.log(`There was a problem with the fetch operation: ${error.message}`);
         });
 })
+}
+

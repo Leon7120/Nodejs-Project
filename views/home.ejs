@@ -1,10 +1,52 @@
 <%- include ('./header.ejs')%>
 
-            <form action="http://localhost:3000/v1/logout" method="post"><button>Logout</button></form>
+  <!-- <form action="http://localhost:3000/v1/logout" method="post"><button>Logout</button></form>
             <div>
                 <div><a href="/v1/pizza">Get All Pizza</a></div>
                 <div><a href="">Get One Pizza</a></div>
                 <div><a href="">Update</a></div>
                 <div><a href="">Delete</a></div>
-            </div>
-    <%- include ('./footer.ejs')%>
+            </div> -->
+
+  <!-- sidebar -->
+  <nav class="sidebar">
+    <div class="menu_content">
+      <ul class="menu_items">
+        <div class="menu_title">Dashboard</div>
+        <!-- start -->
+        <li class="item">
+          <span class="span_item">Admin</span>
+          <i class="bx bx-chevron-right arrow-left"></i>
+          <ul class="menu_items submenu">
+            <a href="#" class="sublink">Nav Sub Link</a>
+            <a href="#" class="sublink">Nav Sub Link</a>
+            <a href="#" class="sublink">Nav Sub Link</a>
+            <a href="#" class="sublink">Nav Sub Link</a>
+          </ul>
+        </li>
+      </ul>
+      <!-- end -->
+      <ul class="menu_items">
+        <div class="menu_title">Actions</div>
+        <li class="item">
+          <span class="span_item">Get</span>
+        </li>
+        <li class="item">
+          <span class="span_item">Create</span>
+        </li>
+        <li class="item">
+          <span class="span_item">Update</span>
+        </li>
+        <li class="item">
+          <span class="span_item">Delete</span>
+        </li>
+      </ul>
+      <!-- Sidebar Open / Close -->
+      <div class="bottom_items">
+        <div class="bottom">
+          <span class="span_item"> <i class="fa-solid fa-right-from-bracket"></i>Logout</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <%- include ('./footer.ejs')%>
