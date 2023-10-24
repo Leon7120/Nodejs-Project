@@ -5,11 +5,7 @@ const passport = require('../config/passport.js');
 const controller = require('../controller/login.controller.js');
 
 router.get('/', function (req, res) {
-  if (req.session.messages) {
-    res.render('login', { message: req.session.messages });
-  } else {
     res.render('login');
-  }
   // res.sendFile(__dirname + '/index.html');
 })
 // router.get('/home', controller.isAuthenticated, function (req, res) {
@@ -21,14 +17,27 @@ router.get('/home', function (req, res) {
 router.post('/register', validator.userValidator(), controller.register);
 //router.post('/register', controller.register);
 
-router.post('/login', validator.userValidator(),
-  passport.authenticate('local', {
-    successRedirect: "/v1/home",
-    failureRedirect: ("/v1"),
-    passReqToCallback: true,
-  }), function (req, res) {
-    res.json(req.session.messages);
-  });
+router.post('/login', validator.userValidator(), (req, res, next) => {
+  passport.authenticate('local', (err, user) => {
+    if (err) {
+      return res.status(500).json({ message: 'An error occurred during authentication.' });
+    }
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid username or password.' });
+    }
+    req.login(user, (err) => {
+      if (err) {
+        return res.status(500).json({ message: 'An error occurred during login.' });
+      }
+      return next();
+    });
+  })(req, res, next);
+}, function (req, res) {
+  res.status(200).json({ status:200, message: 'http://localhost:3000/v1/home' });
+});
+
+
+
 
 router.post('/logout', function (req, res, next) {
   req.logout(function (err) {

@@ -10,16 +10,16 @@ passport.use(new LocalStrategy(function verify(username, password, callback) {
                 return callback(err);
             }
             if (!user || user.length == 0) {
-                return callback(null, false, ({ message: 'No account exists for that email!' }));
+                return callback(null, false);
             } else {
                 if (!validPassword(password, user[0].u_password)) {
-                    return callback(null, false, ({ message: 'Something Wrong.' }));
+                    return callback(null, false);
                 }
             }
-            return callback(null, user, ({ message: 'Successfully Login.' }));
+            return callback(null, user);
         });
     } catch (err) {
-        return callback(null, false, ({ message: 'Error' }));
+        return callback(null, false);
     }
 }));
 function validPassword(password, hashPassword) {

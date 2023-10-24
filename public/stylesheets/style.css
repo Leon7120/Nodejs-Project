@@ -121,7 +121,11 @@ footer {
   position: relative;
   padding: 20px 40px;
 }
-
+.sign-in-form input,
+.sign-up-form  input {
+  letter-spacing: 1.8px;
+  font-size: 1.05em;
+}
 .sign-in-sign-up-button {
   margin: auto;
 }

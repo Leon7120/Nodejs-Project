@@ -7,11 +7,11 @@ const url = "http://localhost:3000/v1"
 
 
 signInButton.addEventListener('click', () => {
-    loginForm.style.display = 'block';
+    signInForm.style.display = 'block';
     signUpForm.style.display = 'none';
 });
 signUpButton.addEventListener('click', () => {
-    loginForm.style.display = 'none';
+    signInForm.style.display = 'none';
     signUpForm.style.display = 'block';
 });
 
@@ -50,7 +50,7 @@ signInForm.addEventListener('submit', (e) => {
 
     fetch(url + '/login', {
         method: 'POST',
-        redirect: "manual",
+        redirect: "follow",
         body: JSON.stringify({
             username: user,
             password: pw,
@@ -58,13 +58,20 @@ signInForm.addEventListener('submit', (e) => {
         headers: {
             'Content-type': 'application/json; charset=UTF-8',
         }
-    }).then((res) =>{
-        console.log(res.data);
-        return res.data;
+    }).then((res) => {
+        return (res.json());
+    }).then(function (msg) {
+        if (msg.status === 200) {
+            window.location.href = msg.message;
+        } else {
+            message.innerHTML = msg.message;
+            console.log(msg);
+        }
+
     }).catch(err => {
-        alert(err);
+        throw (err);
     })
-    
+
     signInForm.reset();
 });
 
