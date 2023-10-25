@@ -2,12 +2,12 @@ const { body, param } = require("express-validator");
 
 const pizzaValidator = () => {
     return [
-        body("category")
+        body("P_Category")
             .exists({ checkFalsy: true })
             .withMessage("Input is required")
             .matches(/^[A-Za-z\s]+$/)
             .withMessage('Category must be alphabetic.'),
-        body("price")
+        body("P_Price")
             .exists()
             .withMessage("Input is required")
             .isNumeric()

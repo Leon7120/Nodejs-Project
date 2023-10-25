@@ -21,17 +21,17 @@ const getSpecificPizza = async (query) => {
             whereParameter[Op.and] = [];
             if (query.id) {
                 whereParameter[Op.and].push({
-                    pizzaId: { [Op.like]: query.id }
+                    P_Id: { [Op.like]: query.id }
                 })
             }
             if (query.category) {
                 whereParameter[Op.and].push({
-                    category: { [Op.like]: query.category }
+                    P_Category: { [Op.like]: query.category }
                 })
             }
             if (query.price) {
                 whereParameter[Op.and].push({
-                    price: { [Op.like]: query.price }
+                    P_Price: { [Op.like]: query.price }
                 })
             }
         }
@@ -52,7 +52,7 @@ const getSpecificPizza = async (query) => {
 const getOnePizza = async (id) => {
     try {
         const pizza = await pizzaModel.findOne({
-            where: { pizzaId: id }
+            where: { P_Id: id }
         })
         if (!pizza) {
             return false;
@@ -66,9 +66,9 @@ const getOnePizza = async (id) => {
 var createPizza = async (body) => {
     try {
         return await pizzaModel.create({
-            "PizzaId": body.pizzaId,
-            "Category": body.category,
-            "Price": body.price
+            "P_Id": body.P_Id,
+            "P_Category": body.P_Category,
+            "P_Price": body.P_Price
         });
     } catch (err) {
         throw Error(err);
@@ -89,7 +89,7 @@ var createPizza = async (body) => {
 
 var deletePizza = async (id) => {
     try {
-        const result = await pizzaModel.destroy({ where: { pizzaId: id } })
+        const result = await pizzaModel.destroy({ where: { P_Id: id } })
         if (!result || result == 0) {
             return false
         } else {
@@ -105,8 +105,8 @@ var updatePizza = async (id, reqCategory, reqPrice) => {
         if (!pizza) {
             return false
         }
-        pizza.Category = reqCategory;
-        pizza.Price = reqPrice;
+        pizza.P_Category = reqCategory;
+        pizza.P_Price = reqPrice;
         await pizza.save();
         return true
     } catch (error) {

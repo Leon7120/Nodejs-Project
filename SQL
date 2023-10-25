@@ -16,5 +16,4 @@ CREATE TABLE IF NOT EXISTS Pizza (
 );
 
 INSERT INTO User VALUES (uuid(),'654321','123456@Abc',NOW(),default),(1,'123456','123456@Abc',NOW(),default);
-INSERT INTO Pizza VALUES (1,'hawaii', 20),(2,'mozallera', 25);
-
+INSERT INTO Pizza VALUES (1,'hawaii', 20),(2,'mozallera', 25),(3,'vege', 25);

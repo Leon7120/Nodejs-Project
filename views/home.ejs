@@ -9,44 +9,126 @@
             </div> -->
 
   <!-- sidebar -->
-  <nav class="sidebar">
-    <div class="menu_content">
-      <ul class="menu_items">
-        <div class="menu_title">Dashboard</div>
-        <!-- start -->
-        <li class="item">
-          <span class="span_item">Admin</span>
-          <i class="bx bx-chevron-right arrow-left"></i>
-          <ul class="menu_items submenu">
-            <a href="#" class="sublink">Nav Sub Link</a>
-            <a href="#" class="sublink">Nav Sub Link</a>
-            <a href="#" class="sublink">Nav Sub Link</a>
-            <a href="#" class="sublink">Nav Sub Link</a>
-          </ul>
-        </li>
-      </ul>
-      <!-- end -->
-      <ul class="menu_items">
-        <div class="menu_title">Actions</div>
-        <li class="item">
-          <span class="span_item">Get</span>
-        </li>
-        <li class="item">
-          <span class="span_item">Create</span>
-        </li>
-        <li class="item">
-          <span class="span_item">Update</span>
-        </li>
-        <li class="item">
-          <span class="span_item">Delete</span>
-        </li>
-      </ul>
-      <!-- Sidebar Open / Close -->
-      <div class="bottom_items">
-        <div class="bottom">
-          <span class="span_item"> <i class="fa-solid fa-right-from-bracket"></i>Logout</span>
+  <div class="content">
+    <nav class="sidebar">
+      <div class="menu_content">
+        <ul class="menu_items">
+          <div class="menu_title">Dashboard</div>
+          <!-- start -->
+          <li class="item">
+            <span class="span_item">Admin</span>
+            <i class="bx bx-chevron-right arrow-left"></i>
+            <ul class="menu_items submenu">
+              <a href="#" class="sublink">Nav Sub Link</a>
+              <a href="#" class="sublink">Nav Sub Link</a>
+              <a href="#" class="sublink">Nav Sub Link</a>
+              <a href="#" class="sublink">Nav Sub Link</a>
+            </ul>
+          </li>
+        </ul>
+        <!-- end -->
+        <ul class="menu_items">
+          <div class="menu_title">Actions</div>
+          <li class="item">
+            <span class="span_item">Get</span>
+          </li>
+          <li class="item">
+            <span class="span_item">Create</span>
+          </li>
+          <li class="item">
+            <span class="span_item">Update</span>
+          </li>
+          <li class="item">
+            <span class="span_item">Delete</span>
+          </li>
+        </ul>
+        <!-- Sidebar Open / Close -->
+        <div class="bottom_items">
+          <div class="bottom">
+            <span class="span_item"> <i class="fa-solid fa-right-from-bracket"></i>Logout</span>
+          </div>
         </div>
       </div>
+    </nav>
+    <div class="actions-form">
+      <div class="actions-title">
+        <span>Get Pizza</span>
+      </div>
+      <div class="get-div">
+        <form class="get-form">
+          <div class="actions-input">
+            <input type="text" id="get-id" name="id">
+            <label for="get-id">Pizza Id</label>
+          </div>
+          <div class="actions-input">
+            <input type="text" id="get-category" name="category">
+            <label for="get-category">Category</label>
+          </div>
+          <div class="actions-input">
+            <input type="text" id="get-price" name="price">
+            <label for="get-price">Price</label>
+          </div>
+          <button class="actions-button" button="submit" id="get-button">Get</button>
+        </form>
+      </div>
     </div>
-  </nav>
+    <div class="actions-form">
+      <div class="actions-title">
+        <span>Create Pizza</span>
+      </div>
+      <div class="create-div">
+        <form class="create-form">
+          <div class="actions-input">
+            <input type="text" id="create-id" name="id">
+            <label for="create-id">Pizza Id</label>
+          </div>
+          <div class="actions-input">
+            <input type="text" id="create-category" name="category">
+            <label for="create-category">Category</label>
+          </div>
+          <div class="actions-input">
+            <input type="text" id="create-price" name="price">
+            <label for="create-price">Price</label>
+          </div>
+          <button class="actions-button" button="submit" id="create-button">Create</button>
+        </form>
+      </div>
+    </div>
+    <div class="actions-form">
+      <div class="actions-title">
+        <span>Update Pizza</span>
+      </div>
+      <div class="update-div">
+        <form class="update-form">
+          <div class="actions-input">
+            <input type="text" id="update-id" name="id">
+            <label for="update-id">Pizza Id</label>
+          </div>
+          <div class="actions-input">
+            <input type="text" id="update-category" name="category">
+            <label for="update-category">Category</label>
+          </div>
+          <div class="actions-input">
+            <input type="text" id="update-price" name="price">
+            <label for="update-price">Price</label>
+          </div>
+          <button class="actions-button" button="submit" id="update-button">Update</button>
+        </form>
+      </div>
+    </div>
+    <div class="actions-form">
+      <div class="actions-title">
+        <span>Delete Pizza</span>
+      </div>
+      <div class="delete-div">
+        <form class="delete-form">
+          <div class="actions-input">
+            <input type="text" id="update-id" name="id">
+            <label for="delete-id">Pizza Id</label>
+          </div>
+          <button class="actions-button" button="submit" id="delete-button">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
   <%- include ('./footer.ejs')%>

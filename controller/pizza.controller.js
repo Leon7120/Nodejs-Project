@@ -6,6 +6,7 @@ var getAllPizza = async (req, res) => {
         if (Object.keys(req.query).length === 0) {
             var getAll = await services.getAllPizza();
         } else if (req.query.id || req.query.category || req.query.price) {
+            console.log(req.query.id);
             var getSpecificPizza = await services.getSpecificPizza(req.query);
         }
         if (getSpecificPizza || getAll) {
