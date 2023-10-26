@@ -20,6 +20,7 @@ router.post('/register', validator.userValidator(), controller.register);
 router.post('/login', validator.userValidator(), (req, res, next) => {
   passport.authenticate('local', (err, user) => {
     if (err) {
+      
       return res.status(500).json({ message: 'An error occurred during authentication.' });
     }
     if (!user) {
@@ -35,10 +36,6 @@ router.post('/login', validator.userValidator(), (req, res, next) => {
 }, function (req, res) {
   res.status(200).json({ status:200, message: 'http://localhost:3000/v1/home' });
 });
-
-
-
-
 router.post('/logout', function (req, res, next) {
   req.logout(function (err) {
     if (err) { return next(err); }
