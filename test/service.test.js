@@ -106,7 +106,7 @@ describe("Test API", () => {
     const pizzaId = 2;
     chai.request(app)
       .patch(`/v1/pizza/${pizzaId}`)
-      .send({ category: 'BBQ', price: 35 })
+      .send({ category: 'bbq', price: 35 })
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.have.an('object');

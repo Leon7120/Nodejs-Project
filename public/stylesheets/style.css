@@ -260,13 +260,16 @@ footer {
   transition: all 0.5s ease-in;
   padding: 10px 35px;
 }
-.span_item i{
-  margin-right : 5px;
+
+.span_item i {
+  margin-right: 5px;
 }
-.span_item:hover{
+
+.span_item:hover {
   background-color: #335c76;
   color: white;
 }
+
 .submenu {
   display: none;
 }
@@ -297,27 +300,88 @@ footer {
   margin-bottom: 30px;
 
 }
-.logout-button{
+
+.logout-button {
   background: none;
-	color: inherit;
-	border: none;
-	padding: 0;
-	font: inherit;
-	cursor: pointer;
-	outline: inherit;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
 }
+
 .bottom {
   text-align: center;
   width: 100%;
   font-size: 1.1em;
 }
+
 .content {
   display: flex;
 }
-.actions-form{
-  margin:auto;
+
+.actions-form {
+  margin: auto;
+  border: #000 1px dotted;
+  border-radius: 4px;
+  padding: 50px 10px;
+  position: relative;
+  display:none;
 }
 
+#search-pizza-div {
+  display: block;
+}
+
+.message {
+  position: absolute;
+  margin: auto;
+  top: 10px;
+}
+
+.actions-title {
+  margin-bottom: 15px;
+  padding: 0 20px;
+  font-size: 1.3em;
+  font-weight: bold;
+  border-bottom: dotted black;
+  cursor: default;
+}
+
+.actions-input {
+  margin: 5px;
+  display: block;
+}
+
+.actions-input input {
+  height: 25px;
+}
+
+.actions-button {
+  background-color: #1161ed;
+  color: #FFF;
+  height: 40px;
+  width: 50%;
+  display: block;
+  padding: 10px 20px;
+  margin-top: 30px;
+  border-radius: 20px;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.5s ease-in-out;
+}
+
+.actions-button:hover {
+  background: #4082f5;
+  box-shadow: 0px 4px 30px -5px #4082f5;
+  cursor: pointer;
+}
+
+.actions-contents {
+  margin-top: 40px;
+}
 
 @media screen and (max-width: 768px) {
   #sidebarOpen {

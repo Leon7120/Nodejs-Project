@@ -90,40 +90,36 @@ if (signInButton) {
                 console.log(`There was a problem with the fetch operation: ${error.message}`);
             });
     })
+    const loginUser = document.getElementById("sign-in-username");
+    const loginPw = document.getElementById("sign-in-password");
 
+    loginUser.addEventListener('input', (e) => {
+        if (loginUser.value == "" || !loginUser.value || loginUser.value == null) {
+            message.innerHTML = "Empty Username";
+        } else {
+            message.innerHTML = "";
+        }
+    })
+
+    loginPw.addEventListener("input", (e) => {
+        if (loginPw.value == null || !loginPw.value || loginPw.value == "") {
+            message.innerHTML = "Empty Password";
+        } else {
+            message.innerHTML = "";
+        }
+    })
 }
 
-const loginUser = document.getElementById("sign-in-username");
-const loginPw = document.getElementById("sign-in-password");
-
-loginUser.addEventListener('input', (event) => {
-    if (loginUser.value == "" || !loginUser.value || loginUser.value == null) {
-        message.innerHTML = "Empty Username";
-    } else {
-        message.innerHTML = "";
-    }
-})
-
-loginPw.addEventListener("input", (e) => {
-    if (loginPw.value == null || !loginPw.value || loginPw.value == "") {
-        message.innerHTML = "Empty Password";
-    } else {
-        message.innerHTML = "";
-    }
-
-})
-
-
-
 const logoutButton = document.getElementById("logout-button");
-logoutButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    fetch(url + "/logout", {
-        method: "POST",
+if (logoutButton) {
+    logoutButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        fetch(url + "/logout", {
+            method: "POST",
+        })
+        window.location.href = "/v1";
     })
-    window.location.href = "/v1";
-
-})
+}
 
 const getForm = document.getElementById('get-form');
 const createForm = document.getElementById('create-form');
@@ -132,28 +128,51 @@ const deleteForm = document.getElementById('delete-form');
 
 getButton = document.getElementById("get-button");
 getButton.addEventListener('click', (e) => {
-    // var id = document.getElementById("get-id").value;
-    // var category = document.getElementById("get-category").value;
-    // var price = document.getElementById("get-price").value;
-    // var message = document.getElementById("message");
+    var id = document.getElementById("get-id").value;
+    var category = document.getElementById("get-category").value;
+    var price = document.getElementById("get-price").value;
+    var msg = document.getElementById("message");
 
-    // const params = new URLSearchParams({
-    //     id: id,
-    //     category: category,
-    //     price: price
-    // })
+    const params = new URLSearchParams({
+        id: id,
+        category: category,
+        price: price
+    })
+
     e.preventDefault();
-    fetch(pizzaUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();  // This returns a promise
+    fetch(`http://localhost:3000/v1/pizza?${params}`)
+        .then(res => {
+            return res.json();
         })
         .then(data => {
-            console.log(data);
-        })
-        .catch(error => {
+            if (data.message) {
+                msg.innerHTML = data.message;
+            } else if (data.data) {
+                const table = document.getElementById("table");
+                data.data.forEach(element => {
+                    const tr = document.createElement('tr');
+                    const td1 = document.createElement('td');
+                    const td2 = document.createElement('td');
+                    const td3 = document.createElement('td');
+                    const dataId = document.createTextNode(element.P_Id);
+                    const dataCategory = document.createTextNode(element.P_Category);
+                    const dataPrice = document.createTextNode(element.P_Price);
+
+                    td1.appendChild(dataId);
+                    td2.appendChild(dataCategory);
+                    td3.appendChild(dataPrice);
+
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+
+                    table.appendChild(tr);
+
+                    console.log(element);
+                    // console.log(data.data[0].P_Category);
+                });
+            }
+        }).catch(error => {
             console.log(`There was a problem with the fetch operation: ${error.message}`);
         });
 });
