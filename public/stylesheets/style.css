@@ -127,38 +127,33 @@ footer {
   font-size: 1.05em;
 }
 
-.sign-in-sign-up-button {
+.sign-in-sign-up-button-div {
   margin: auto;
 }
 
-.sign-in-button,
-.sign-up-button {
+.sign-in-up-button {
   height: 40px;
   width: 49%;
   border-color: #1161ed;
-  ;
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: all 0.5s ease-out;
   background-color: #fff;
 }
 
-.sign-in-button:hover,
-.sign-up-button:hover {
+.sign-in-up-button:hover {
   background: #4c7ad5;
   box-shadow: 5px;
   cursor: pointer;
   color: white;
 }
 
-.sign-in-button:focus,
-.sign-up-button:focus {
+.sign-in-up-button:focus{
   background-color: #1161ed;
   color: white;
 }
 
-.sign-in-button:active,
-.sign-up-button:active {
+.sign-in-up-button:active {
   outline: none;
 }
 
@@ -226,12 +221,12 @@ footer {
   display: none;
 }
 
-.menu_content {
+.sidebar_content {
   position: relative;
   height: 100%;
 }
 
-.menu_title {
+.sidebar_title {
   margin: 15px 0;
   padding: 0 20px;
   font-size: 1.3em;
@@ -240,7 +235,7 @@ footer {
   cursor: default;
 }
 
-.menu_items {
+.sidebar_items {
   padding: 0;
   list-style: none;
   margin-bottom: 40px;
@@ -251,7 +246,7 @@ footer {
   white-space: nowrap;
   font-size: 1.1em;
   text-align: center;
-  margin: 15px;
+  margin: 20px;
   padding: 0px 40px;
 }
 
@@ -333,11 +328,10 @@ footer {
 #search-pizza-div {
   display: block;
 }
-
-.message {
-  position: absolute;
+.home-message{
+  position:absolute;
+  top:10px;
   margin: auto;
-  top: 10px;
 }
 
 .actions-title {
@@ -381,6 +375,42 @@ footer {
 
 .actions-contents {
   margin-top: 40px;
+}
+.main-content{
+  margin:auto;
+  position:relative;
+}
+.table{
+  text-align: center;
+  font-size: 1.1em;
+  margin:15px;
+  padding:15px;
+  border-collapse: collapse; 
+  position: relative;
+}
+.table td, .table th{
+  border: 1px solid #999;
+  padding: 20px;
+}
+th {
+  background: brown;
+  color: white;
+  border-radius: 0;
+  position: sticky;
+  top: 0;
+  padding: 10px;
+}
+tr:hover {
+  background-color: #ffc107;
+}
+.span-button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
 }
 
 @media screen and (max-width: 768px) {

@@ -11,7 +11,7 @@ const getAllPizza = async () => {
             return pizza;
         }
     } catch (err) {
-        throw Error(err);
+        throw new Error(err);
     }
 }
 const getSpecificPizza = async (query) => {
@@ -46,7 +46,7 @@ const getSpecificPizza = async (query) => {
             return pizza;
         }
     } catch (err) {
-        throw Error(err);
+        throw new Error(err);
     }
 }
 const getOnePizza = async (id) => {
@@ -60,18 +60,18 @@ const getOnePizza = async (id) => {
             return pizza;
         }
     } catch (err) {
-        throw Error(err);
+        throw new Error(err);
     }
 }
 var createPizza = async (body) => {
     try {
         return await pizzaModel.create({
-            "P_Id": body.P_Id,
-            "P_Category": body.P_Category,
-            "P_Price": body.P_Price
+            "P_Id": body.id,
+            "P_Category": body.category,
+            "P_Price": body.price
         });
     } catch (err) {
-        throw Error(err);
+        throw new Error(err);
     }
     // let query = "insert into Pizza(PizzaId,Category,Price) VALUES (default,?)";
     // let value = [category, price];
@@ -91,26 +91,26 @@ var deletePizza = async (id) => {
     try {
         const result = await pizzaModel.destroy({ where: { P_Id: id } })
         if (!result || result == 0) {
-            return false
+            return false;
         } else {
-            return true
+            return true;
         }
     } catch (err) {
         throw new Error(err);
     }
 }
-var updatePizza = async (id, reqCategory, reqPrice) => {
+var updatePizza = async (id, category, price) => {
     try {
         const pizza = await pizzaModel.findByPk(id)
         if (!pizza) {
             return false
         }
-        pizza.P_Category = reqCategory;
-        pizza.P_Price = reqPrice;
+        pizza.P_Category = category;
+        pizza.P_Price = price;
         await pizza.save();
-        return true
+        return true;
     } catch (error) {
-        throw Error(error);
+        throw new Error(error);
     }
 }
 module.exports = {

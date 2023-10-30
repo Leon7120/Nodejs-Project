@@ -72,9 +72,9 @@ describe("Test API", () => {
   });
   it('should create new pizza', (done) => {
     const newPizza = {
-      "P_Id": 4,
-      "P_Category": "Cheese",
-      "P_Price": 20,
+      "id": 4,
+      "category": "Cheese",
+      "price": 20,
     };
     chai.request(app)
       .post(`/v1/pizza`)
