@@ -75,25 +75,6 @@ if (signInButton) {
 
         signInForm.reset();
     });
-
-
-    // const loginUser = document.getElementById("sign-in-username");
-    // const loginPw = document.getElementById("sign-in-password");
-
-    // loginUser.addEventListener('input', (e) => {
-    //     if (loginUser.value == "" || !loginUser.value || loginUser.value == null) {
-    //         message.innerHTML = "Empty Username";
-    //     } else {
-    //         message.innerHTML = "";
-    //     }
-    // })
-    // loginPw.addEventListener("input", (e) => {
-    //     if (loginPw.value == null || !loginPw.value || loginPw.value == "") {
-    //         message.innerHTML = "Empty Password";
-    //     } else {
-    //         message.innerHTML = "";
-    //     }
-    // })
     const fields = {
         "signin-username": "Empty Username",
         "signin-password": "Empty Password",
@@ -107,19 +88,16 @@ if (signInButton) {
             message.innerHTML = e.target.value.trim() === "" ? fields[id] : "";
         });
     }
-
-
-    const logoutButton = document.getElementById("logout-button");
-    if (logoutButton) {
-        logoutButton.addEventListener("click", (e) => {
-            e.preventDefault();
-            fetch(url + "/logout", {
-                method: "POST",
-            })
-            window.location.href = "/v1";
+}
+const logoutButton = document.getElementById("logout-button");
+if (logoutButton) {
+    logoutButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        fetch(url + "/logout", {
+            method: "POST",
         })
-    }
-
+        window.location.href = "/v1";
+    })
     const actions = document.getElementById('actions-form');
     const homeMessage = document.getElementById("home-message");
     const getButton = document.getElementById("get-button");
@@ -163,7 +141,7 @@ if (signInButton) {
 
                     const headerId = document.createTextNode("Id");
                     const headerCategory = document.createTextNode("Category");
-                    const headerPrice = document.createTextNode("Price");
+                    const headerPrice = document.createTextNode("Price (RM)");
 
                     th1.appendChild(headerId);
                     th2.appendChild(headerCategory);
@@ -316,3 +294,6 @@ if (signInButton) {
         }
     });
 }
+
+
+

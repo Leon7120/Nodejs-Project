@@ -5,7 +5,8 @@ const isAuthenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
         next();
     } else {
-        res.send({ message: 'You Are Not Authorized' });
+        req.flash('error', 'You Are Not Authorized');
+        res.redirect('/v1');
     }
 }
 const checkAuthenticated = (req, res, next) => {
@@ -24,17 +25,23 @@ var register = (req, res) => {
         services.register(req.body.username, req.body.password, (error, result) => {
             if (error) {
                 console.log(error);
-                res.status(409)
-                    .send({ message: "Something Wrong!" })
-                    .end();
-            } else if(result) {
+                if (error.errno == 1062) {
+                    res.status(409)
+                        .send({ message: "Try another username" })
+                        .end();
+                } else {
+                    res.status(400)
+                        .send({ message: "Try again" })
+                        .end();
+                }
+            } else if (result) {
                 res.status(201)
                     .send({ message: "Successfully Registered A New Account!" })
                     .end();
             }
         });
     } catch (error) {
-        res.send({ message: "Error" });
+        res.send({ message: "Server Problem" });
         console.log(error);
     }
 }

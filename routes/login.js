@@ -5,15 +5,14 @@ const passport = require('../config/passport.js');
 const controller = require('../controller/login.controller.js');
 
 router.get('/', function (req, res) {
-    res.render('login');
+    const message = req.flash('error');
+    res.render('login', { message: message });
   // res.sendFile(__dirname + '/index.html');
 })
-// router.get('/home', controller.isAuthenticated, function (req, res) {
-//   res.render('home');
-// })
-router.get('/home', function (req, res) {
+router.get('/home', controller.isAuthenticated, function (req, res) {
   res.render('home');
 })
+
 router.post('/register', validator.userValidator(), controller.register);
 //router.post('/register', controller.register);
 

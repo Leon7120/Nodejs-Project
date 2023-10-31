@@ -1,43 +1,47 @@
 <%- include ('./header.ejs')%>
-    <div class="sign-in-sign-up-div">
-        <div class="sign-in-sign-up-button-div">
-            <button id="sign-in-button" class="sign-in-up-button"> Sign In</button>
-            <button id="sign-up-button" class="sign-in-up-button">Sign Up</button>
+<% if (message.length > 0) { %>
+    <div class="alert alert-warning" role="alert""><%= message %></div>
+  <% } %>
+    <div class="content">
+        <div class="login-div">
+            <div class="sign-in-sign-up-button-div">
+                <button id="sign-in-button" class="sign-in-up-button"> Sign In</button>
+                <button id="sign-up-button" class="sign-in-up-button">Sign Up</button>
+            </div>
+            <div class="message" id="message"></div>
+
+            <form class="login-form" id="sign-in-form" autocomplete="off">
+                <div class="form-input">
+                    <input type="text" name="username" id="signin-username" required>
+                    <label for="username">Username</label>
+                    <p id="signin-username-message"></p>
+                </div>
+                <div class="form-input">
+                    <input type="password" name="password" id="signin-password" required>
+                    <label for="password">Password</label>
+                    <p id="signin-password-message"></p>
+
+                </div>
+                <!-- <input type="checkbox" class="checkbox-1-1" />
+            <label for="checkbox-1-1">Keep me Signed in</label> -->
+                <button class="form-button" button="submit">Login</button>
+                <hr>
+                <a href="#">Forgot Password?</a>
+            </form>
+
+            <form class="login-form" id="sign-up-form" autocomplete="off">
+                <div class="form-input">
+                    <input type="text" name="username" id="signup-username" required>
+                    <label for="username">Username</label>
+                    <p id="signup-username-message"></p>
+                </div>
+                <div class="form-input">
+                    <input type="password" name="password" id="signup-password" required>
+                    <label for="password">Password</label>
+                    <p id="signup-password-message"></p>
+                </div>
+                <button class="form-button" type="submit">Register</button>
+            </form>
         </div>
-        <div class="message" id="message"></div>
-
-        <form class="sign-in-form" id="sign-in-form" autocomplete="off">
-            <div class="sign-in-input">
-                <input type="text" name="username" id="signin-username">
-                <label for="username">Username</label>
-                <p id="signin-username-message"></p>
-            </div>
-            <div class="sign-in-input">
-                <input type="password" name="password" id="signin-password">
-                <label for="password">Password</label>
-                <p id="signin-password-message"></p>
-
-            </div>
-            <input type="checkbox" class="checkbox-1-1" />
-            <label for="checkbox-1-1">Keep me Signed in</label>
-            <button class="login" button="submit">Login</button>
-            <hr>
-            <a href="#">Forgot Password?</a>
-        </form>
-
-        <form class="sign-up-form" id="sign-up-form" autocomplete="off">
-            <div class="sign-up-input">
-                <input type="text" name="username" id="signup-username">
-                <label for="username">Username</label>
-                <p id="signup-username-message"></p>
-            </div>
-            <div class="sign-up-input">
-                <input type="password" name="password" id="signup-password">
-                <label for="password">Password</label>
-                <p id="signup-password-message"></p>
-            </div>
-            <button class="register" type="submit">Register</button>
-        </form>
     </div>
-
     <%- include ('./footer.ejs')%>

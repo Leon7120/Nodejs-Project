@@ -1,18 +1,30 @@
 body {
   min-height: 100vh;
+  margin: 0px;
   display: flex;
   flex-direction: column;
-  margin: 0px;
   font-family: 'Montserrat', sans-serif;
-  font-size: 1em;
-}
-
-.header .row {
-  width: 100%;
-  margin: 1% 0%;
-  padding: 0.6% 0%;
-  color: gray;
   font-size: 0.8em;
+  letter-spacing: 1px;
+}
+@media screen and (min-width: 1200px) {
+  body {
+  font-size: 1em;
+  }
+}
+i {
+  margin:5px;
+}
+.header {
+  background: #000;
+  text-align: center;
+
+}
+.row {
+  width: 100%;
+  color: gray;
+  padding : 5px 0px;
+  display: block;
 }
 
 .header .row a {
@@ -20,29 +32,20 @@ body {
   text-decoration: none;
   color: gray;
   transition: 0.5s;
-  width: 24%;
+  width:auto;
+  text-transform: capitalize;
+  margin: 0px 15px;
 }
 
 .header .row a:hover {
   color: #fff;
-
 }
 
 .header .row a i {
-  margin: 0% 1%;
-  font-size: 2em;
-}
-
-header {
-  height: 6vh;
-  background: #000;
-  text-align: center;
-  padding: 15px 0px;
+  font-size: 1.2em;
 }
 
 footer {
-  margin-top: auto;
-  height: 10vh;
   background: #000;
   padding: 15px 0px;
   text-align: center;
@@ -50,8 +53,6 @@ footer {
 
 .footer .row {
   width: 100%;
-  margin: 1% 0%;
-  padding: 0.6% 0%;
   color: gray;
   font-size: 0.8em;
 }
@@ -66,16 +67,12 @@ footer {
   color: #fff;
 }
 
-.footer .row ul {
-  width: 100%;
-}
-
 .footer .row a i {
   font-size: 2em;
   margin: 0% 1%;
 }
 
-@media (max-width:720px) {
+/* @media (max-width:720px) {
   .footer {
     text-align: left;
     padding: 5%;
@@ -90,8 +87,9 @@ footer {
   .footer .row a i {
     margin: 0% 3%;
   }
-}
+} */
 
+/* Login Content styling */
 .message {
   position: relative;
   text-align: center;
@@ -107,24 +105,12 @@ footer {
 #sign-up-form {
   display: none;
 }
-
-.sign-in-sign-up-div {
-  height: 500px;
-  width: 400px;
-  margin: auto;
+.content {
+  flex: 1;
+  display: flex;
 }
-
-.sign-in-form,
-.sign-up-form {
-  letter-spacing: 1px;
-  position: relative;
-  padding: 20px 40px;
-}
-
-.sign-in-form input,
-.sign-up-form input {
-  letter-spacing: 1.8px;
-  font-size: 1.05em;
+.login-div {
+  margin: 50px auto;
 }
 
 .sign-in-sign-up-button-div {
@@ -148,7 +134,7 @@ footer {
   color: white;
 }
 
-.sign-in-up-button:focus{
+.sign-in-up-button:focus {
   background-color: #1161ed;
   color: white;
 }
@@ -157,65 +143,70 @@ footer {
   outline: none;
 }
 
-.sign-in-input,
-.sign-up-input {
+.login-form {
+  letter-spacing: 1px;
   position: relative;
-  margin: 20px;
+  padding: 20px;
 }
 
-.sign-in-input input,
-.sign-up-input input {
-  width: 100%;
+.form-input {
+  position: relative;
+  margin: 20px 0px;
+}
+
+.form-input input {
+  width: 80%;
   height: 30px;
+  padding: 0px 10px;
+  letter-spacing: inherit;
 }
 
-.text:focus {
-  outline: 0;
+.form-input input:focus {
   border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 20px;
   background: rgba(0, 0, 0, 0);
 }
 
-.login,
-.register {
+.form-input p {
+  color: #ef5050;
+
+}
+
+.form-button {
   background-color: #1161ed;
   color: #FFF;
   height: 40px;
   width: 100%;
   display: block;
-  padding: 10px 20px;
-  margin-top: 30px;
+  margin: 30px 0px;
   border-radius: 20px;
   border: none;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: inherit;
   transition: all 0.5s ease-in-out;
 }
 
-.login:hover,
-.register:hover {
+.form-button:hover {
   background: #4082f5;
   box-shadow: 0px 4px 30px -5px #4082f5;
   cursor: pointer;
 }
 
-.login:focus,
-.register:focus {
+.form-button:focus {
   outline: none;
 }
 
 /* sidebar */
 .sidebar {
   position: relative;
-  width: 15vw;
-  padding: 30px 20px;
+  padding:20px;
   z-index: 100;
   overflow-y: scroll;
   box-shadow: 0 0 1px var(--grey-color-light);
   transition: all 0.5s ease;
   background-color: #b7ddf4;
-  height: 76vh;
 }
+
 
 .sidebar::-webkit-scrollbar {
   display: none;
@@ -224,40 +215,39 @@ footer {
 .sidebar_content {
   position: relative;
   height: 100%;
+  display:flex;
+  flex-direction: column;
 }
 
 .sidebar_title {
-  margin: 15px 0;
-  padding: 0 20px;
-  font-size: 1.3em;
+  font-size: 1.1em;
   font-weight: bold;
   border-bottom: dotted black;
   cursor: default;
+  text-align: center;
 }
 
 .sidebar_items {
   padding: 0;
   list-style: none;
-  margin-bottom: 40px;
 }
 
 .item {
-  text-decoration: none;
   white-space: nowrap;
-  font-size: 1.1em;
   text-align: center;
-  margin: 20px;
-  padding: 0px 40px;
+  margin: 15px;
 }
-
+.span-button {
+  background: none;
+  border: none;
+  padding: 0;
+  letter-spacing: inherit;
+  font-size: 0.8em;
+}
 .span_item {
   cursor: pointer;
   transition: all 0.5s ease-in;
   padding: 10px 35px;
-}
-
-.span_item i {
-  margin-right: 5px;
 }
 
 .span_item:hover {
@@ -284,87 +274,83 @@ footer {
 .submenu .sublink {
   padding: 15px 15px 15px 52px;
 }
-
+.upper_items {
+  flex:1;
+}
 .bottom_items {
-  position: absolute;
-  bottom: 0px;
   width: 100%;
-  cursor: pointer;
-  transition: all 0.5s ease;
-  padding: 18px 0;
-  margin-bottom: 30px;
-
-}
-
-.logout-button {
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-}
-
-.bottom {
   text-align: center;
-  width: 100%;
-  font-size: 1.1em;
+  font-size: 1.2em;
+
 }
 
-.content {
-  display: flex;
-}
-
-.actions-form {
-  margin: auto;
-  border: #000 1px dotted;
-  border-radius: 4px;
-  padding: 50px 10px;
+/* Home Content */
+.center {
   position: relative;
-  display:none;
+  padding: 50px;
 }
+
 
 #search-pizza-div {
   display: block;
 }
-.home-message{
-  position:absolute;
-  top:10px;
-  margin: auto;
-}
 
+.form-content{
+  position: relative;
+}
+.home-message {
+  position: absolute;
+  right: 50px;
+}
+.actions-form {
+  margin: auto;
+  border: #1161ed 1px solid;
+  border-radius: 4px;
+  padding: 30px;
+  position: relative;
+  display: none;
+}
 .actions-title {
-  margin-bottom: 15px;
-  padding: 0 20px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  margin: 10px 10px;
   font-size: 1.3em;
   font-weight: bold;
-  border-bottom: dotted black;
-  cursor: default;
+  text-transform: uppercase;
+}
+
+.actions-contents {
+  margin-top: 40px;
+  display : flex;
+  flex-direction: row;
+  padding:10px;
+}
+.actions-contents form {
+  display : inherit;
+  flex-direction: inherit;
 }
 
 .actions-input {
-  margin: 5px;
-  display: block;
+  width:200px;
 }
 
 .actions-input input {
-  height: 25px;
+  height: 30px;
+  padding-left: 10px;
+  letter-spacing: 2px;
 }
 
 .actions-button {
   background-color: #1161ed;
   color: #FFF;
   height: 40px;
-  width: 50%;
-  display: block;
   padding: 10px 20px;
-  margin-top: 30px;
   border-radius: 20px;
   border: none;
   text-transform: uppercase;
-  letter-spacing: 1px;
   transition: all 0.5s ease-in-out;
+  margin-left: 10px;
 }
 
 .actions-button:hover {
@@ -372,46 +358,37 @@ footer {
   box-shadow: 0px 4px 30px -5px #4082f5;
   cursor: pointer;
 }
-
-.actions-contents {
-  margin-top: 40px;
-}
-.main-content{
-  margin:auto;
-  position:relative;
-}
-.table{
+.table {
   text-align: center;
   font-size: 1.1em;
-  margin:15px;
-  padding:15px;
-  border-collapse: collapse; 
+  margin: 15px;
+  padding: 15px;
+  border-collapse: collapse;
   position: relative;
 }
-.table td, .table th{
-  border: 1px solid #999;
-  padding: 20px;
+
+.table td,
+.table th {
+  border: 1px solid #000;
+  padding: 10px 20px;
+  min-width: 50px;
+  text-transform: capitalize;
 }
+
 th {
-  background: brown;
+  background: #4082f5;
   color: white;
   border-radius: 0;
   position: sticky;
   top: 0;
   padding: 10px;
 }
+
 tr:hover {
   background-color: #ffc107;
 }
-.span-button {
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-}
+
+
 
 @media screen and (max-width: 768px) {
   #sidebarOpen {

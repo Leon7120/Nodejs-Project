@@ -14,6 +14,7 @@ const pizzaRouter = require('./routes/pizza');
 
 const dataConnection = require('./config/database');
 const passport = require('passport');
+const flash = require("connect-flash");
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -58,6 +59,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(flash());
 app.use('/v1', loginRouter);
 app.use('/v1', pizzaRouter);
 

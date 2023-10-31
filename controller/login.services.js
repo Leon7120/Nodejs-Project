@@ -9,7 +9,6 @@ var register = (username, password, callback) => {
             callback(error);
         } else {
             if (result.affectedRows === 1) {
-                console.log("What happened");
                 callback(null, result);
             } else {
                 callback(new Error('Insert operation failed'));
