@@ -1,16 +1,17 @@
 var express = require('express');
 var router = express.Router();
-var validator = require('../config/validator.js');
-const passport = require('../config/passport.js');
+var validator = require('../middleware/validator.js');
+const passport = require('../middleware/passport.js');
 const controller = require('../controller/login.controller.js');
 
-router.get('/', function (req, res) {
-    const message = req.flash('error');
-    res.render('login', { message: message });
+router.get('/', controller.checkAuthenticated, function (req, res) {
+  var message = req.flash('error');
+  res.render('login', { message: message });
   // res.sendFile(__dirname + '/index.html');
 })
 router.get('/home', controller.isAuthenticated, function (req, res) {
-  res.render('home');
+  var message2 = req.flash('error');
+  res.render('home', { message: message2 });
 })
 
 router.post('/register', validator.userValidator(), controller.register);
@@ -19,7 +20,6 @@ router.post('/register', validator.userValidator(), controller.register);
 router.post('/login', validator.userValidator(), (req, res, next) => {
   passport.authenticate('local', (err, user) => {
     if (err) {
-      
       return res.status(500).json({ message: 'An error occurred during authentication.' });
     }
     if (!user) {
@@ -33,7 +33,7 @@ router.post('/login', validator.userValidator(), (req, res, next) => {
     });
   })(req, res, next);
 }, function (req, res) {
-  res.status(200).json({ status:200, message: 'http://localhost:3000/v1/home' });
+  res.status(200).json({ status: 200, message: 'http://localhost:3000/v1/home' });
 });
 router.post('/logout', function (req, res, next) {
   req.logout(function (err) {

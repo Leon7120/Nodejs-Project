@@ -1,10 +1,8 @@
 const createError = require('http-errors');
 const path = require('path');
-
 const logger = require('morgan');
 const express = require('express');
 const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session);
 const app = express();
 const cors = require("cors");
 require('dotenv').config()
@@ -12,9 +10,22 @@ require('dotenv').config()
 const loginRouter = require('./routes/login');
 const pizzaRouter = require('./routes/pizza');
 
-const dataConnection = require('./config/database');
+// const MySQLStore = require('express-mysql-session')(session);
+// const dataConnection = require('./config/database');
 const passport = require('passport');
 const flash = require("connect-flash");
+const RedisStore = require('connect-redis').default;
+const { createClient } = require('redis');
+
+// Initialize client.
+let redisClient = createClient();
+redisClient.connect().catch(console.error);
+
+// Initialize store.
+let redisStore = new RedisStore({
+  client: redisClient,
+  prefix: 'myapp:',
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -33,27 +44,27 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-const sessionStore = new MySQLStore({
-  clearExpired: true,
-  expiration: 86400000,
-  createDatabaseTable: true,
-  connectionLimit: 50,
-  schema: {
-    tableName: 'sessions',
-    columnNames: {
-      session_id: 'session_id',
-      expires: 'expires',
-      data: 'data'
-    }
-  }
-}/* session store options */, dataConnection);
+// const sessionStore = new MySQLStore({
+//   clearExpired: true,
+//   expiration: 86400000,
+//   createDatabaseTable: true,
+//   connectionLimit: 50,
+//   schema: {
+//     tableName: 'sessions',
+//     columnNames: {
+//       session_id: 'session_id',
+//       expires: 'expires',
+//       data: 'data'
+//     }
+//   }
+// }/* session store options */, dataConnection);
 
 app.use(session({
   secret: process.env.NODE_SESSION_SECRETKEY,
   resave: false,
-  store: sessionStore,
+  store: redisStore,
   saveUninitialized: true,
-  cookie: { maxAge: 1000 * 60 * 60 * 24 }
+  cookie: { maxAge: 1000 * 60 * 60 * 1 }/* milliseconds,seconds,minutes,hours */
 }));
 
 app.use(passport.initialize());

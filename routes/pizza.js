@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var controller = require('../controller/pizza.controller.js');
-var validator = require('../config/validator.js');
+var validator = require('../middleware/validator.js');
 const axios = require('axios');
 const redis = require('redis');
 

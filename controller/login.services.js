@@ -1,20 +1,28 @@
 var db = require('../config/database');
 var crypto = require("crypto");
 
-var register = (username, password, callback) => {
-    let query = "INSERT INTO User VALUES (uuid(),?,?,NOW(),default)";
-    var hashPassword = genPassword(password);
-    db.query(query, [username, hashPassword], (error, result) => {
-        if (error) {
-            callback(error);
-        } else {
-            if (result.affectedRows === 1) {
-                callback(null, result);
-            } else {
-                callback(new Error('Insert operation failed'));
+const userModel = require('../models/user.model');
+
+var register = async (body) => {
+    try {
+        const existingUser = await userModel.findOne({
+            where: {
+                u_username: body.username
             }
+        });
+        if (existingUser) {
+            return { "errno" : 1062 };
+        } else {
+            return await userModel.create({
+                "u_username": body.username,
+                "u_password": genPassword(body.password)
+            });
         }
-    });
+    } catch (err) {
+        // Log the original error
+        console.error(err);
+        throw new Error(err);
+    }
 }
 
 function genPassword(password) {
