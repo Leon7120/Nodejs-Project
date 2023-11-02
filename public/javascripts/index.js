@@ -98,7 +98,6 @@ if (logoutButton) {
         })
         window.location.href = "/v1";
     })
-    const actions = document.getElementById('actions-form');
     const homeMessage = document.getElementById("home-message");
     const getButton = document.getElementById("get-button");
 
@@ -119,73 +118,136 @@ if (logoutButton) {
             })
             getFetchFunction(url + `/pizza?${params}`)
         }
+        document.getElementById("get-id").value = "";
+        document.getElementById("get-category").value = "";
+        document.getElementById("get-price").value = "";
+
         e.preventDefault();
     });
     function getFetchFunction(url) {
         fetch(url)
-            .then(res => {
-                return res.json();
-            })
-            .then(data => {
-                if (data.message) {
-                    console.log(data.message);
-                    homeMessage.innerHTML = data.message;
-                } else if (data.data) {
+            .then(res => res.json())
+            .then(result => {
+                if (result.message) {
+                    homeMessage.innerHTML = result.message;
+                } else if (result.data) {
                     const table = document.getElementById("table");
                     table.innerHTML = "";
 
-                    const tr2 = document.createElement('tr');
-                    const th1 = document.createElement('th');
-                    const th2 = document.createElement('th');
-                    const th3 = document.createElement('th');
-
-                    const headerId = document.createTextNode("Id");
-                    const headerCategory = document.createTextNode("Category");
-                    const headerPrice = document.createTextNode("Price (RM)");
-
-                    th1.appendChild(headerId);
-                    th2.appendChild(headerCategory);
-                    th3.appendChild(headerPrice);
-                    tr2.appendChild(th1);
-                    tr2.appendChild(th2);
-                    tr2.appendChild(th3);
-                    table.appendChild(tr2);
-
-                    data.data.forEach(element => {
-                        const tr = document.createElement('tr');
-                        const td1 = document.createElement('td');
-                        const td2 = document.createElement('td');
-                        const td3 = document.createElement('td');
-                        const dataId = document.createTextNode(element.P_Id);
-                        const dataCategory = document.createTextNode(element.P_Category);
-                        const dataPrice = document.createTextNode(element.P_Price);
-
-                        td1.appendChild(dataId);
-                        td2.appendChild(dataCategory);
-                        td3.appendChild(dataPrice);
-
-                        tr.appendChild(td1);
-                        tr.appendChild(td2);
-                        tr.appendChild(td3);
-
-                        table.appendChild(tr);
-
-                        console.log(element);
-                        // console.log(data.data[0].P_Category);
+                    const headers = ["Id", "Category", "Price (RM)", "Edit", "Delete"];
+                    const headerRow = document.createElement('tr');
+                    headers.forEach(headerText => {
+                        const th = document.createElement('th');
+                        th.appendChild(document.createTextNode(headerText));
+                        headerRow.appendChild(th);
                     });
+                    table.appendChild(headerRow);
+
+                    result.data.forEach(element => {
+                        const row = document.createElement('tr');
+                        const rowData = [element.P_Id, element.P_Category, element.P_Price];
+                        rowData.forEach(data => {
+                            const td = document.createElement('td');
+                            td.appendChild(document.createTextNode(data));
+                            row.appendChild(td);
+                        });
+
+                        ['Editable', 'Delete', 'Confirm'].forEach(buttonText => {
+                            const buttonCell = document.createElement('td');
+                            const button = document.createElement('button');
+                            button.innerText = buttonText;
+                            if (buttonText == 'Delete') {
+                                button.classList.add("delete-data-button");
+                            } else if (buttonText == 'Editable') {
+                                button.classList.add("edit-data-button");
+                            } else if (buttonText == 'Confirm') {
+                                button.classList.add("confirm-data-button");
+                            }
+                            buttonCell.appendChild(button);
+                            row.appendChild(buttonCell);
+                        });
+
+                        table.appendChild(row);
+                    });
+                    implementDeleteFunctionToButton();
+                    implementEditFunctionToButton();
+                    implementConfirmFunctionToButton();
                 }
-            }).catch(error => {
+            })
+            .catch(error => {
                 console.log(`There was a problem with the fetch operation: ${error.message}`);
             });
     }
-    const deleteForm = document.getElementById("delete-form");
+    function implementDeleteFunctionToButton() {
+        var dataButtonFunction = document.querySelectorAll(".delete-data-button");
+        dataButtonFunction.forEach(btn => {
+            btn.onclick = function (e) {
+                const idValue = e.target.closest('tr').querySelector('td:first-child').innerHTML;
+                deleteFunction(idValue);
+                var row = e.target.closest('tr');
+                row.remove();
+            }
+        })
+    }
+    function implementEditFunctionToButton() {
+        var dataButtonFunction = document.querySelectorAll(".edit-data-button");
+        dataButtonFunction.forEach(btn => {
+            btn.onclick = function (e) {
+                const targetColumn2 = e.target.closest('tr').querySelector('td:nth-child(2)');
+                const targetColumn3 = e.target.closest('tr').querySelector('td:nth-child(3)');
 
+                if (btn.innerText == 'Editable') {
+                    btn.defaultValue1 = targetColumn2.innerText;
+                    btn.defaultValue2 = targetColumn3.innerText;
+                    btn.innerText = "Cancel";
+                    targetColumn2.setAttribute('contenteditable', true);
+                    targetColumn3.setAttribute('contenteditable', true);
+                } else if (btn.innerText == "Cancel") {
+                    btn.innerText = "Editable"
+                    targetColumn2.setAttribute('contenteditable', false);
+                    targetColumn3.setAttribute('contenteditable', false);
+                    targetColumn2.innerText = btn.defaultValue1;
+                    targetColumn3.innerText = btn.defaultValue2;
+                }
+            }
+        })
+    }
+    function implementConfirmFunctionToButton() {
+        var dataButtonFunction = document.querySelectorAll(".confirm-data-button");
+        dataButtonFunction.forEach(btn => {
+            btn.onclick = function (e) {
+                const targetColumn1 = e.target.closest('tr').querySelector('td:nth-child(1)');
+                const targetColumn2 = e.target.closest('tr').querySelector('td:nth-child(2)');
+                const targetColumn3 = e.target.closest('tr').querySelector('td:nth-child(3)');
+                const targetColumn4 = e.target.closest('tr').querySelector('.edit-data-button');
+                targetColumn4.innerText = "Editable"
+                targetColumn2.setAttribute('contenteditable', false);
+                targetColumn3.setAttribute('contenteditable', false);
+
+                try {
+                    updateFunction(targetColumn1.innerText, targetColumn2.innerText, targetColumn3.innerText);
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+        })
+    }
+
+
+    var data = document.getElementById('table-data');
+    if (data) {
+        getFetchFunction(url + "/pizza");
+    }
+    const deleteForm = document.getElementById("delete-form");
     deleteForm.addEventListener('submit', (e) => {
         e.preventDefault();
-
         homeMessage.innerHTML = "";
         var id = document.getElementById("delete-id").value;
 
+        deleteFunction(id);
+    });
+
+    function deleteFunction(id) {
         fetch(url + `/pizza/${id}`, {
             method: "DELETE",
             headers: {
@@ -204,8 +266,7 @@ if (logoutButton) {
             console.log(err);
             homeMessage.innerHTML = err.message;
         })
-    });
-
+    }
     const updateForm = document.getElementById("update-form");
 
     updateForm.addEventListener('submit', (e) => {
@@ -216,6 +277,10 @@ if (logoutButton) {
         var category = document.getElementById("update-category").value;
         var price = document.getElementById("update-price").value;
 
+        updateFunction(id, category, price);
+    });
+
+    function updateFunction(id, category, price) {
         fetch(url + `/pizza/${id}`, {
             method: "PATCH",
             body: JSON.stringify({
@@ -238,8 +303,7 @@ if (logoutButton) {
             console.log(err);
             homeMessage.innerHTML = err.message;
         })
-    });
-
+    }
     const createForm = document.getElementById("create-form");
 
     createForm.addEventListener('submit', (e) => {
@@ -273,6 +337,8 @@ if (logoutButton) {
             console.log(err);
             homeMessage.innerHTML = err.message;
         })
+        createForm.reset();
+
     });
 
     const spanButton = document.querySelectorAll('.span-button');
@@ -294,6 +360,7 @@ if (logoutButton) {
         }
     });
 }
+
 
 
 

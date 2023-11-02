@@ -26,7 +26,7 @@ const getSpecificPizza = async (query) => {
             }
             if (query.category) {
                 whereParameter[Op.and].push({
-                    P_Category: { [Op.like]: query.category }
+                    P_Category: { [Op.like]: `%${query.category}%`}
                 })
             }
             if (query.price) {
@@ -73,18 +73,6 @@ var createPizza = async (body) => {
     } catch (err) {
         throw new Error(err);
     }
-    // let query = "insert into Pizza(PizzaId,Category,Price) VALUES (default,?)";
-    // let value = [category, price];
-
-    // db.query(query, [value], (error, result) => {
-    //     if (error) {
-    //         throw Error(error);
-    //     } else {
-    //         if (result.affectedRows == 1) {
-    //             return true;
-    //         }
-    //     }
-    // })
 }
 
 var deletePizza = async (id) => {
@@ -109,8 +97,8 @@ var updatePizza = async (id, category, price) => {
         pizza.P_Price = price;
         await pizza.save();
         return true;
-    } catch (error) {
-        throw new Error(error);
+    } catch (err) {
+        throw new Error(err);
     }
 }
 module.exports = {

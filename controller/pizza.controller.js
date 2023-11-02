@@ -22,14 +22,10 @@ var getAllPizza = async (req, res) => {
     }
 }
 var createPizza = async (req, res) => {
-    const errorFormatter = ({ location, msg, param, value, nestedErrors }) => {
-        // Build your resulting errors however you want! String, object, whatever - it works!
-        return `${msg}`;
-    };
     const errors = validationResult(req);
     console.log(errors);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ message: errors.mapped() });
+        return res.status(400).json({ message: "Try with valid inputs." });
     }
     try {
         const createPizza = await services.createPizza(req.body)
@@ -39,8 +35,8 @@ var createPizza = async (req, res) => {
         }
     } catch (error) {
         console.error(error);
-        res.status(error?.status || 500)
-            .send({ message: "Server Problem" })
+        res.status(error?.status || 400)
+            .send({ message: "Something Wrong! Try with other details maybe." })
     }
 }
 var deletePizza = async (req, res) => {
@@ -65,7 +61,7 @@ var deletePizza = async (req, res) => {
 var updatePizza = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array({ onlyFirstError: true }) });
+        return res.status(400).json({ message: "Try with valid inputs." });
     }
     try {
         let updatePizza = await services.updatePizza(req.params.id, req.body.category, req.body.price);
