@@ -1,7 +1,5 @@
-var db = require('../config/database');
-var crypto = require("crypto");
-
 const userModel = require('../models/user.model');
+const genPassword = require('../utils/utils').genPassword;
 
 var register = async (body) => {
     try {
@@ -25,11 +23,7 @@ var register = async (body) => {
     }
 }
 
-function genPassword(password) {
-    //var salt = crypto.randomBytes(32).toString('hex');
-    var genHash = crypto.pbkdf2Sync(password, "salt", 10000, 64, 'sha512').toString('hex');
-    return genHash;
-}
+
 module.exports = {
     register,
 };

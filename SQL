@@ -1,20 +1,35 @@
-DROP TABLE IF EXISTS User,Pizza;
+DROP TABLE IF EXISTS User,Pizza,`Order`,OrderDetails;
 
 CREATE TABLE IF NOT EXISTS User (
-    u_id varchar(36) NOT NULL UNIQUE,
-    u_username varchar(50) UNIQUE NOT NULL,
-    u_password varchar(255) NOT NULL,
-    u_createDate datetime NOT NULL,
-    u_status boolean NOT NULL DEFAULT 1,
-    PRIMARY KEY (u_id)
+    user_id varchar(36) NOT NULL UNIQUE,
+    user_username varchar(50) UNIQUE NOT NULL,
+    user_password varchar(255) NOT NULL,
+    user_createDate datetime NOT NULL,
+    user_status boolean NOT NULL DEFAULT 1,
+    PRIMARY KEY (user_id)
 );
 CREATE TABLE IF NOT EXISTS Pizza ( 
-    p_id int NOT NULL UNIQUE,
-    p_category varchar(30)  NOT NULL UNIQUE,
-    p_price int NOT NULL,
-    PRIMARY KEY (p_id)
+    pizza_id int NOT NULL UNIQUE,
+    pizza_category varchar(30)  NOT NULL UNIQUE,
+    pizza_price int NOT NULL,
+    PRIMARY KEY (pizza_id)
 );
-
+CREATE TABLE IF NOT EXISTS `Order` (
+    order_id int NOT NULL AUTO_INCREMENT,
+    order_date datetime NOT NULL,
+    user_id varchar(36) NOT NULL,
+    PRIMARY KEY (order_id),
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
+);
+CREATE TABLE IF NOT EXISTS OrderDetails (
+    order_detail_id int NOT NULL AUTO_INCREMENT,
+    order_detail_quantity int NOT NULL,
+    pizza_id int NOT NULL,
+    order_id int NOT NULL,
+    PRIMARY KEY(order_detail_id),
+    FOREIGN KEY (pizza_id) REFERENCES Pizza(pizza_id),
+    FOREIGN KEY (order_id) REFERENCES `Order`(order_id)
+);
 INSERT INTO User VALUES (uuid(),'654321','123456@Abc',NOW(),default),(1,'123456','123456@Abc',NOW(),default);
 INSERT INTO Pizza VALUES (1,'hawaii', 20),(2,'mozallera', 25),(3,'veggie', 25),(4,"pepperoni",30),
 (5,"beef",35),(6,"margherita",30),(7,"supreme",40),(8,"new-york",20),(9,"mozzarella",25),(10,"salami",30);

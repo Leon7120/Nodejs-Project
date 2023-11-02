@@ -1,22 +1,6 @@
 const services = require('./login.services');
 const { validationResult } = require("express-validator");
 
-const isAuthenticated = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        next();
-    } else {
-        req.flash('error', 'You Are Not Authorized');
-        res.redirect('/v1');
-    }
-}
-const checkAuthenticated = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        req.flash('error', 'Do you want to logout?');
-        res.redirect('/v1/home')
-    } else {
-        next();
-    }
-}
 var register = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -40,7 +24,5 @@ var register = async (req, res) => {
 }
 
 module.exports = {
-    isAuthenticated,
-    checkAuthenticated,
     register,
 };

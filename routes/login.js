@@ -2,14 +2,14 @@ var express = require('express');
 var router = express.Router();
 var validator = require('../middleware/validator.js');
 const passport = require('../middleware/passport.js');
-const controller = require('../controller/login.controller.js');
+const utils = require('../utils/utils.js');
 
-router.get('/', controller.checkAuthenticated, function (req, res) {
+router.get('/', utils.checkAuthenticated, function (req, res) {
   var message = req.flash('error');
   res.render('login', { message: message });
   // res.sendFile(__dirname + '/index.html');
 })
-router.get('/home', controller.isAuthenticated, function (req, res) {
+router.get('/home', passport.authenticate('jwt', { session: false }), function (req, res) {
   var message2 = req.flash('error');
   res.render('home', { message: message2 });
 })

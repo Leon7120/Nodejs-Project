@@ -152,7 +152,7 @@ if (logoutButton) {
                             row.appendChild(td);
                         });
 
-                        ['Editable', 'Delete', 'Confirm'].forEach(buttonText => {
+                        ['Editable', 'Delete', 'Confirm', 'Add to Cart'].forEach(buttonText => {
                             const buttonCell = document.createElement('td');
                             const button = document.createElement('button');
                             button.innerText = buttonText;
@@ -162,6 +162,8 @@ if (logoutButton) {
                                 button.classList.add("edit-data-button");
                             } else if (buttonText == 'Confirm') {
                                 button.classList.add("confirm-data-button");
+                            } else if (buttonText == 'Add to Cart') {
+                                button.classList.add("add-to-cart-button");
                             }
                             buttonCell.appendChild(button);
                             row.appendChild(buttonCell);

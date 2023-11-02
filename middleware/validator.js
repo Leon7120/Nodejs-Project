@@ -45,8 +45,9 @@ const userValidator = () => {
             .exists()
             .isString()
             .isLength({ min: 6 }),
-        // body("password")
-        //     .isStrongPassword({ minLength: 8 })
+        body("password")
+            .isString({ minLength: 8 })
+            // .isStrongPassword({ minLength: 8 })
     ]
 };
 module.exports = {

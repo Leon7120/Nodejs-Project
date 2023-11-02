@@ -2,7 +2,6 @@
   "name": "node.js",
   "version": "0.0.0",
   "private": true,
-  
   "scripts": {
     "start": "node ./bin/www",
     "test": "mocha --exit"
@@ -22,10 +21,12 @@
     "express-session": "^1.17.3",
     "express-validator": "^7.0.1",
     "http-errors": "~1.6.3",
+    "jsonwebtoken": "^9.0.2",
     "morgan": "~1.9.1",
     "mysql2": "^3.6.0",
     "npx": "^10.2.2",
     "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "redis": "^4.6.10",
     "sequelize": "^6.33.0",
