@@ -253,6 +253,8 @@ footer {
 .span_item:hover {
   background-color: #335c76;
   color: white;
+  font-size: 1.5em;
+
 }
 
 .submenu {
@@ -357,6 +359,7 @@ footer {
   background: #4082f5;
   box-shadow: 0px 4px 30px -5px #4082f5;
   cursor: pointer;
+  
 }
 .table {
   text-align: center;
@@ -367,15 +370,31 @@ footer {
   position: relative;
 }
 
-.table td,
-.table th {
+.table td {
   border: 1px solid #000;
   padding: 10px 20px;
   min-width: 50px;
   text-transform: capitalize;
 }
-
-th {
+.table tr td[contenteditable="true"]{
+  background-color: #ef5050;
+  transition: all 0.5s ease-in-out;
+  
+}
+.table tr td[contenteditable="true"]:hover{
+  font-size: 1.3em;
+  color: #fff;
+}
+.table tr td[contenteditable="true"]:focus{
+  font-size: 1.2em;
+  color: #fff;
+  outline: none;
+}
+.table th {
+  border: 1px solid #000;
+  padding: 10px 20px;
+  min-width: 50px;
+  text-transform: capitalize;
   background: #4082f5;
   color: white;
   border-radius: 0;
