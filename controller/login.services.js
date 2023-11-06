@@ -1,5 +1,5 @@
 const userModel = require('../models/user.model');
-const genPassword = require('../utils/utils').genPassword;
+const utils = require('../utils/utils');
 
 var register = async (body) => {
     try {
@@ -9,7 +9,7 @@ var register = async (body) => {
             }
         });
         if (existingUser) {
-            return { "errno" : 1062 };
+            return { "errno": 1062 };
         } else {
             return await userModel.create({
                 "u_username": body.username,
@@ -23,7 +23,31 @@ var register = async (body) => {
     }
 }
 
+var login = async (body) => {
+    try {
+        const user = await userModel.findOne({
+            where: {
+                u_username: body.username
+            }
+        });
+        if (!user || user.length <= 0) {
+            return false
+        } else {
+            const check = utils.validPassword(body.password, user.u_password);
+            if (check) {
+                return ({ user: user.u_username, token: utils.issueToken(user.u_username) });
+            } else {
+                return false
+            }
+        }
+    } catch (err) {
+        console.error(err);
+        throw new Error(err);
+    }
+}
+
 
 module.exports = {
     register,
+    login
 };

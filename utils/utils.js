@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const JWT = {
-    jwt: process.env.JWT_SECRET || '12345-67890-09876-54321',
+    secret: process.env.JWT_SECRET || '12345-67890-09876-54321',
     jwtExp: '100d',
 }
 
@@ -32,22 +32,14 @@ const checkAuthenticated = (req, res, next) => {
     }
 }
 const issueToken = user => {
-    return jwt.sign({ id: user._id }, JWT.jwt, {
-        expiresIn: JWT.jwtExp,
+    return "Bearer " + jwt.sign({ sub: user }, '12345-67890-09876-54321', {
+        expiresIn: '1d',
     })
 }
-const verifyToken = token =>
-    new Promise((resolve, reject) => {
-        jwt.verify(token, JWT.jwt, (err, payload) => {
-            if (err) return reject(err)
-            resolve(payload)
-        })
-    })
 module.exports = {
     validPassword,
     genPassword,
     isAuthenticated,
     checkAuthenticated,
     issueToken,
-    verifyToken,
 }

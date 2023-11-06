@@ -23,6 +23,26 @@ var register = async (req, res) => {
     }
 }
 
+var login = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ message: "Inputs did not match the format." });
+    }
+    try {
+        let result = await services.login(req.body);
+        if (result) {
+            console.log(result.token);
+            res.setHeader("authorization", result.token);
+            res.send({ status: 200, message: "/v1/home" });
+        } else {
+            res.send({ message: "Invalid Username Or Password" });
+        }
+    } catch (error) {
+        res.send({ message: "Server Problem" });
+    }
+}
+
 module.exports = {
     register,
+    login
 };

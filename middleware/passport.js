@@ -7,29 +7,27 @@ const utils = require('../utils/utils');
 
 const jwtOption = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: "Secret",
-    algorithms: ['RS256']
+    secretOrKey: "12345-67890-09876-54321",
 }
 const jwtStrategy = new JwtStrategy(jwtOption, async (payload, done) => {
+    console.log("Payload:", payload);
     try {
         const existingUser = await userModel.findOne({
             where: {
                 u_username: payload.sub
             }
         });
+        console.log("Existing User:", existingUser);
         if (!existingUser) {
             return done(null, false);
-        } else {
-            if (!utils.validPassword(password, existingUser.u_password)) {
-                return done(null, false);
-            }
         }
         return done(null, existingUser);
     } catch (err) {
         console.error(err);
-        return callback(err, false);
+        return done(err, false);
     }
 })
+
 passport.use(jwtStrategy);
 
 // passport.use(new LocalStrategy(async function verify(username, password, callback) {
