@@ -1,4 +1,4 @@
-const services = require('./services');
+const services = require('./pizza.services');
 const { validationResult } = require("express-validator");
 
 var getAllPizza = async (req, res) => {
@@ -16,16 +16,16 @@ var getAllPizza = async (req, res) => {
                 .send({ message: "No pizza found!" })
         }
     } catch (error) {
+        console.error(error);
         res.status(error?.status || 500)
-            .send({
-                status: "FAILED", data: { error: error?.message || error }
-            })
+            .send({ message: "Server Problem" })
     }
 }
 var createPizza = async (req, res) => {
     const errors = validationResult(req);
+    console.log(errors);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array({ onlyFirstError: true }) });
+        return res.status(400).json({ message: "Try with valid inputs." });
     }
     try {
         const createPizza = await services.createPizza(req.body)
@@ -34,15 +34,14 @@ var createPizza = async (req, res) => {
                 .send({ message: "Successfully Created A New Pizza" });
         }
     } catch (error) {
-        res.status(error?.status || 500)
-            .send({
-                status: "FAILED", data: { error: error?.message || error }
-            })
+        console.error(error);
+        res.status(error?.status || 400)
+            .send({ message: "Something Wrong! Try with other details maybe." })
     }
 }
 var deletePizza = async (req, res) => {
     if (!req.params.id) {
-        res.status(400).send({ Error: "Something is Wrong" });
+        res.status(400).send({ message: "Empty Input" });
     }
     try {
         const deletePizza = await services.deletePizza(req.params.id);
@@ -54,16 +53,15 @@ var deletePizza = async (req, res) => {
                 .send({ message: "Nothing Happened" });
         }
     } catch (error) {
+        console.error(error);
         res.status(error?.status || 500)
-            .send({
-                status: "FAILED", data: { error: error?.message || error }
-            })
+            .send({ message: "Server Problem" })
     }
 }
 var updatePizza = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array({ onlyFirstError: true }) });
+        return res.status(400).json({ message: "Try with valid inputs." });
     }
     try {
         let updatePizza = await services.updatePizza(req.params.id, req.body.category, req.body.price);
@@ -75,15 +73,14 @@ var updatePizza = async (req, res) => {
                 .send({ message: "Something wrong!" })
         }
     } catch (error) {
+        console.error(error);
         res.status(error?.status || 500)
-            .send({
-                status: "FAILED", data: { error: error?.message || error }
-            })
+            .send({ message: "Server Problem" })
     }
 }
 var getOnePizza = async (req, res) => {
     if (!req.params.id) {
-        res.status(400).send({ Error: "Something is Wrong" });
+        res.status(400).send({ message: "Empty Input" });
     }
     try {
         var getOne = await services.getOnePizza(req.params.id);
@@ -95,10 +92,9 @@ var getOnePizza = async (req, res) => {
                 .send({ message: "No pizza found!" });
         }
     } catch (error) {
+        console.error(error);
         res.status(error?.status || 500)
-            .send({
-                status: "FAILED", data: { error: error?.message || error }
-            })
+            .send({ message: "Server Problem" })
     }
 }
 module.exports = {

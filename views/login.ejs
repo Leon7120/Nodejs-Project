@@ -1,37 +1,49 @@
-<!DOCTYPE html>
-<html>
+<%- include ('./header.ejs')%>
 
-<head>
-  <title>
-    <%= title %>
-  </title>
-
-</head>
-
-<body>
-  <% if (messages.length> 0) { %>
-    <div class="flash-messages">
-        <% messages.forEach(message=> { %>
-            <div class="flash-message">
-                <%= message %>
+<% if (message.length > 0) { %>
+    <div class="alert alert-warning" role="alert""><%= message %></div>
+  <% } %>
+    <div class="content">
+        <div class="login-div">
+            <div class="sign-in-sign-up-button-div">
+                <button id="sign-in-button" class="sign-in-up-button"> Sign In</button>
+                <button id="sign-up-button" class="sign-in-up-button">Sign Up</button>
             </div>
-            <% }); %>
+            <div class="message" id="message"></div>
+
+            <form class="login-form" id="sign-in-form" autocomplete="off">
+                <div class="form-input">
+                    <input type="text" name="username" id="signin-username" required>
+                    <label for="username">Username</label>
+                    <p id="signin-username-message"></p>
+                </div>
+                <div class="form-input">
+                    <input type="password" name="password" id="signin-password" required>
+                    <label for="password">Password</label>
+                    <p id="signin-password-message"></p>
+
+                </div>
+                <!-- <input type="checkbox" class="checkbox-1-1" />
+            <label for="checkbox-1-1">Keep me Signed in</label> -->
+                <button class="form-button" button="submit">Login</button>
+                <hr>
+                <a href="#">Forgot Password?</a>
+            </form>
+
+            <form class="login-form" id="sign-up-form" autocomplete="off">
+                <div class="form-input">
+                    <input type="text" name="username" id="signup-username" required>
+                    <label for="username">Username</label>
+                    <p id="signup-username-message"></p>
+                </div>
+                <div class="form-input">
+                    <input type="password" name="password" id="signup-password" required>
+                    <label for="password">Password</label>
+
+                    <p id="signup-password-message"></p>
+                </div>
+                <button class="form-button" type="submit">Register</button>
+            </form>
+        </div>
     </div>
-    <% } %>
-    
-  <form method="post" action="http://localhost:3000/v1/login" id="form">
-    <label>Username</label>
-    <input type="text" name="username" required placeholder="User ID">
-    <label>Password</label>
-    <input type="password" name="password" type="password" required placeholder="Password">
-    <input type="submit" value="login">
-  </form>
-
-  <a href="/v1/register">
-    <button><b>Register</b></button>
-  </a>
-  <link rel='stylesheet' href='/stylesheets/style.css' />
-
-</body>
-
-</html>
+    <%- include ('./footer.ejs')%>

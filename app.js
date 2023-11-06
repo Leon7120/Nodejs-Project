@@ -1,10 +1,8 @@
 const createError = require('http-errors');
 const path = require('path');
-
 const logger = require('morgan');
 const express = require('express');
 const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session);
 const app = express();
 const cors = require("cors");
 require('dotenv').config()
@@ -12,9 +10,23 @@ require('dotenv').config()
 const loginRouter = require('./routes/login');
 const pizzaRouter = require('./routes/pizza');
 
+const MySQLStore = require('express-mysql-session')(session);
 const dataConnection = require('./config/database');
 const passport = require('passport');
-const flash = require('express-flash');
+const flash = require("connect-flash");
+
+// const RedisStore = require('connect-redis').default;
+// const { createClient } = require('redis');
+
+// // Initialize client.
+// let redisClient = createClient();
+// redisClient.connect().catch(console.error);
+
+// // Initialize store.
+// let redisStore = new RedisStore({
+//   client: redisClient,
+//   prefix: 'myapp:',
+// });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,7 +43,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(flash());
+
 
 const sessionStore = new MySQLStore({
   clearExpired: true,
@@ -53,12 +65,13 @@ app.use(session({
   resave: false,
   store: sessionStore,
   saveUninitialized: true,
-  cookie: { maxAge: 1000 * 60 * 60 * 24 }
+  cookie: { maxAge: 1000 * 60 * 60 * 1 }/* milliseconds,seconds,minutes,hours */
 }));
 
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 
+app.use(flash());
 app.use('/v1', loginRouter);
 app.use('/v1', pizzaRouter);
 
@@ -79,7 +92,7 @@ app.use(function (err, req, res, next) {
 });
 
 //redirect all invalid url to home page
-app.use(function(req, res) {
+app.use(function (req, res) {
   res.redirect('/v1')
 });
 

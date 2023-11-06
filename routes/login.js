@@ -1,41 +1,30 @@
 var express = require('express');
 var router = express.Router();
-var validator = require('../config/validator.js');
-const passport = require('../config/passport.js');
-const controller = require('../controller/controller.js');
+var validator = require('../middleware/validator.js');
+const passport = require('../middleware/passport.js');
+const utils = require('../utils/utils.js');
+const controller = require('../controller/login.controller.js');
 
-router.get('/', function (req, res, next) {
-    
-    res.render('login', {
-      title: 'Login Page',
-      messages: req.flash('msg')
-    });
-    // res.sendFile(__dirname + '/index.html');
-  })
-  router.get('/register', function (req, res, next) {
-    res.render('register', {
-      title: 'Register Page',
-    });
-  })
-  
-  router.get('/home', controller.isAuthenticated, function (req, res) {
-    res.render('home', { messages: req.flash('msg') });
-  })
-  
-  router.post('/register', validator.userValidator(), controller.register);
-  
-  router.post('/login', validator.userValidator(), passport.authenticate('local', { failureRedirect: '/v1' }), function (req, res) {
-    req.flash('msg', 'Welcome To Home');
-    res.redirect("/v1/home");
-  });
-  
-  router.post('/logout', function (req, res, next) {
-   
-    req.logout(function (err) {
-      if (err) { return next(err); }
-      req.flash('msg', "Successfully Logout");
-      res.redirect('/v1');
-    });
-  });
+router.get('/', utils.checkAuthenticated, function (req, res) {
+  var message = req.flash('error');
+  res.render('login', { message: message });
+  // res.sendFile(__dirname + '/index.html');
+})
+router.get('/home', passport.authenticate('jwt', { session: false }), function (req, res) {
+  var message2 = req.flash('error');
+  res.render('home', { message: message2 });
+})
 
-  module.exports = router;
+router.post('/register', validator.userValidator(), controller.register);
+//router.post('/register', controller.register);
+
+router.post('/login', validator.userValidator(), controller.login);
+
+router.post('/logout', function (req, res, next) {
+  req.logout(function (err) {
+    if (err) { return next(err); }
+    res.redirect('/v1');
+  });
+});
+
+module.exports = router;
