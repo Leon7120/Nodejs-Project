@@ -28,10 +28,13 @@ var createPizza = async (req, res) => {
         return res.status(400).json({ message: "Try with valid inputs." });
     }
     try {
+        console.log("Hello");
         const createPizza = await services.createPizza(req.body)
         if (createPizza) {
             res.status(201)
                 .send({ message: "Successfully Created A New Pizza" });
+        }else{
+            res.status(500).send("Something wrong");
         }
     } catch (error) {
         console.error(error);

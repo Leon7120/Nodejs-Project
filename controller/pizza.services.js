@@ -2,13 +2,28 @@ const pizzaModel = require('../models/pizza.model');
 const sequelize = require("sequelize");
 const Op = sequelize.Op;
 
+function transformArray(data) {
+    return data.map(item => ({
+        id: item.P_Id,
+        category: item.P_Category,
+        price: item.P_Price
+    }));
+}
+function transformObject(data) {
+    return {
+        id: data.P_Id,
+        category: data.P_Category,
+        price: data.P_Price
+    };
+}
+
 const getAllPizza = async () => {
     try {
         const pizza = await pizzaModel.findAll();
         if (!pizza) {
             return false;
         } else {
-            return pizza;
+            return transformArray(pizza);
         }
     } catch (err) {
         throw new Error(err);
@@ -26,7 +41,7 @@ const getSpecificPizza = async (query) => {
             }
             if (query.category) {
                 whereParameter[Op.and].push({
-                    P_Category: { [Op.like]: `%${query.category}%`}
+                    P_Category: { [Op.like]: `%${query.category}%` }
                 })
             }
             if (query.price) {
@@ -43,7 +58,7 @@ const getSpecificPizza = async (query) => {
         if (pizza.length == 0 || pizza == null) {
             return false;
         } else {
-            return pizza;
+            return transformArray(pizza);
         }
     } catch (err) {
         throw new Error(err);
@@ -57,7 +72,7 @@ const getOnePizza = async (id) => {
         if (!pizza) {
             return false;
         } else {
-            return pizza;
+            return transformObject(pizza);
         }
     } catch (err) {
         throw new Error(err);

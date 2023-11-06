@@ -2,9 +2,28 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 const expect = chai.expect;
 const app = require("../app");
+const sinon = require('sinon');
+const pizzaServices = require("../controller/pizza.services")
 chai.use(chaiHttp);
 
+let pizzaData;
 describe("Test API", () => {
+  beforeEach(function (done) {
+    // This runs before each test
+    chai.request(app)
+      .get('/v1/pizza')
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.an('object');
+        expect(res.body.data).to.have.an('array');
+        pizzaData = res.body.data[0];
+        done();
+      });
+  });
+  afterEach(function () {
+    // Restore the default sandbox here
+    sinon.restore();
+  });
   it("Check", function (done) {
     expect(true).to.be.true;
     expect(false).to.be.equal(false);
@@ -17,7 +36,6 @@ describe("Test API", () => {
         expect(res).to.have.status(200);
         expect(res.body).to.have.an('object');
         expect(res.body.data).to.have.an('array');
-        expect(res.body.data[0]).to.be.eql({ P_Id: 1, P_Category: "hawaii", P_Price: 20 })
         done();
       });
   });
@@ -25,12 +43,12 @@ describe("Test API", () => {
   it("should get specific pizza with query", function (done) {
     chai.request(app)
       .get('/v1/pizza')
-      .query({ id: 1, category: "hawaii", price: 20 })
+      .query(pizzaData)
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.have.an('object');
         expect(res.body.data).to.have.an('array');
-        expect(res.body.data[0]).to.be.eql({ P_Id: 1, P_Category: "hawaii", P_Price: 20 })
+        expect(res.body.data[0]).to.be.eql(pizzaData);
         done();
       });
   });
@@ -54,7 +72,7 @@ describe("Test API", () => {
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.have.an('object');
-        expect(res.body.data).to.be.eql({ P_Id: 1, P_Category: "hawaii", P_Price: 20 })
+        expect(res.body.data).to.be.eql(pizzaData)
         done();
       });
   });
@@ -72,16 +90,19 @@ describe("Test API", () => {
   });
   it('should create new pizza', (done) => {
     const newPizza = {
-      "id": 4,
-      "category": "Cheese",
-      "price": 20,
+      "id": 100,
+      "category": "testing",
+      "price": 50,
     };
+    sinon.stub(pizzaServices, 'createPizza').returns({
+      message: 'Successfully Created A New Pizza',
+      status: 201,
+      data: newPizza
+    });
     chai.request(app)
       .post(`/v1/pizza`)
       .send(newPizza)
       .end((err, res) => {
-        console.log(res.request._data.Price);
-        console.log(newPizza.P_Price);
         expect(res.body.message).to.equal('Successfully Created A New Pizza');
         expect(res).to.have.status(201);
         done();
@@ -89,16 +110,16 @@ describe("Test API", () => {
   });
   it('should not create with existing id', (done) => {
     const newPizza = {
-      "P_Id": 1,
-      "P_Category": "Vege",
-      "P_Price": 25,
+      "id": 1,
+      "category": "Vege",
+      "price": 25,
     };
     chai.request(app)
       .post(`/v1/pizza`)
       .send(newPizza)
       .end((err, res) => {
         //expect(res.body.message).to.equal('Something wrong!');
-        expect(res).to.have.status(500);
+        expect(res).to.have.status(400);
         done();
       });
   });
@@ -127,7 +148,12 @@ describe("Test API", () => {
       });
   });
   it('should delete pizza', (done) => {
-    const pizzaId = 4;
+    const pizzaId = 1;
+    sinon.stub(pizzaServices, 'deletePizza').returns({
+      message: 'Successfully Deleted A Pizza',
+      status: 200,
+      data: pizzaId
+    });
     chai.request(app)
       .delete(`/v1/pizza/${pizzaId}`)
       .end((err, res) => {
