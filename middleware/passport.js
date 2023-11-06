@@ -10,14 +10,12 @@ const jwtOption = {
     secretOrKey: "12345-67890-09876-54321",
 }
 const jwtStrategy = new JwtStrategy(jwtOption, async (payload, done) => {
-    console.log("Payload:", payload);
     try {
         const existingUser = await userModel.findOne({
             where: {
                 u_username: payload.sub
             }
         });
-        console.log("Existing User:", existingUser);
         if (!existingUser) {
             return done(null, false);
         }

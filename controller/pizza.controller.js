@@ -28,18 +28,14 @@ var createPizza = async (req, res) => {
         return res.status(400).json({ message: "Try with valid inputs." });
     }
     try {
-        console.log("Hello");
-        const createPizza = await services.createPizza(req.body)
-        if (createPizza) {
-            res.status(201)
-                .send({ message: "Successfully Created A New Pizza" });
-        }else{
-            res.status(500).send("Something wrong");
-        }
+        const newPizza = await services.createPizza(req.body)
+        res.status(201)
+            .send({ message: "Successfully Created A New Pizza", pizza: newPizza });
+
     } catch (error) {
         console.error(error);
         res.status(error?.status || 400)
-            .send({ message: "Something Wrong! Try with other details maybe." })
+            .send({ message: error.message || "Something Wrong! Try with other details maybe." })
     }
 }
 var deletePizza = async (req, res) => {

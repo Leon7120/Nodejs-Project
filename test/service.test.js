@@ -123,6 +123,21 @@ describe("Test API", () => {
         done();
       });
   });
+  it('should not create with missing field', (done) => {
+    const newPizza = {
+      "id": 1,
+      "category": "",
+      "price": 25,
+    };
+    chai.request(app)
+      .post(`/v1/pizza`)
+      .send(newPizza)
+      .end((err, res) => {
+        //expect(res.body.message).to.equal('Something wrong!');
+        expect(res).to.have.status(400);
+        done();
+      });
+  });
   it("should update one pizza", function (done) {
     const pizzaId = 2;
     chai.request(app)
@@ -169,6 +184,30 @@ describe("Test API", () => {
       .end((err, res) => {
         expect(res.body.message).to.equal('Nothing Happened');
         expect(res).to.have.status(200);
+        done();
+      });
+  });
+  it('should handle errors when deleting a pizza with an invalid ID', (done) => {
+    const invalidPizzaId = 'invalid-id';
+    chai.request(app)
+      .delete(`/v1/pizza/${invalidPizzaId}`)
+      .end((err, res) => {
+        expect(err).to.be.null;
+        expect(res).to.have.status(500);
+        expect(res.body).to.have.an('object');
+        expect(res.body.message).to.be.eql("Server Problem");
+        done();
+      });
+  });
+  it('should handle errors when getting a pizza with an invalid ID', (done) => {
+    const invalidPizzaId = 'invalid-id';
+    chai.request(app)
+      .get(`/v1/pizza/${invalidPizzaId}`)
+      .end((err, res) => {
+        expect(err).to.be.null;
+        expect(res).to.have.status(500);
+        expect(res.body).to.have.an('object');
+        expect(res.body.message).to.be.eql("Server Problem");
         done();
       });
   });

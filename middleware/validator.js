@@ -16,7 +16,6 @@ const pizzaValidator = () => {
             .isNumeric()
             .withMessage("Price should be Integer")
     ]
-
 };
 
 const updateValidator = () => {

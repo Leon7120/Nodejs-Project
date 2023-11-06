@@ -86,7 +86,11 @@ var createPizza = async (body) => {
             "P_Price": body.price
         });
     } catch (err) {
-        throw new Error(err);
+        if (err.name === 'SequelizeUniqueConstraintError') {
+            throw new Error('Duplicate entry detected: Try another id or category please.');
+        } else {
+            throw new Error(err);
+        }
     }
 }
 
