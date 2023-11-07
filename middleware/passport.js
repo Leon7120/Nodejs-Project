@@ -3,13 +3,14 @@ const LocalStrategy = require("passport-local");
 const userModel = require('../models/user.model');
 var JwtStrategy = require('passport-jwt').Strategy
 var ExtractJwt = require('passport-jwt').ExtractJwt;
-const utils = require('../utils/utils');
+require('dotenv').config();
 
 const jwtOption = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: "12345-67890-09876-54321",
+    secretOrKey: process.env.ACCESS_TOKEN_SECRET,
 }
 const jwtStrategy = new JwtStrategy(jwtOption, async (payload, done) => {
+    console.log('payload received', payload);
     try {
         const existingUser = await userModel.findOne({
             where: {
@@ -49,18 +50,18 @@ passport.use(jwtStrategy);
 //     }
 // }));
 
-passport.serializeUser(function (user, callback) {
-    process.nextTick(function () {
-        return callback(null, {
-            id: user.id,
-            username: user.username,
-        });
-    });
-});
-passport.deserializeUser(function (user, cb) {
-    process.nextTick(function () {
-        return cb(null, user);
-    });
-});
+// passport.serializeUser(function (user, callback) {
+//     process.nextTick(function () {
+//         return callback(null, {
+//             id: user.id,
+//             username: user.username,
+//         });
+//     });
+// });
+// passport.deserializeUser(function (user, cb) {
+//     process.nextTick(function () {
+//         return cb(null, user);
+//     });
+// });
 
 module.exports = passport;

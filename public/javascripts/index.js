@@ -41,6 +41,28 @@ if (signInButton) {
         })
         signUpForm.reset();
     });
+    //to do
+    function redirectToHomePage(route) {
+        var token = localStorage.getItem('jwt');
+        fetch(url + route, {
+            method: 'GET',
+            headers: {
+                'Authorization': token,
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        }).then((res) => {
+            if (res.ok) {
+                return res.text();
+            } else {
+                console.log('Network response was not ok.');
+            }
+        }).then((data) => {
+            // Here you can handle your data, for example, by inserting it into your HTML
+            document.body.innerHTML = data;
+        }).catch((error) => {
+            console.log('There has been a problem with your fetch operation: ', error.message);
+        });
+    }
     signInForm.addEventListener('submit', (e) => {
         e.preventDefault();
         // Create a FormData instance
@@ -51,7 +73,6 @@ if (signInButton) {
         var pw = formData.get("password");
         fetch(url + '/login', {
             method: 'POST',
-            redirect: "follow",
             body: JSON.stringify({
                 username: user,
                 password: pw,
@@ -60,11 +81,12 @@ if (signInButton) {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         }).then((res) => {
-            console.log(res.headers.get('Authorization'));
+            const token = res.headers.get('Authorization');
+            localStorage.setItem('jwt', token);
             return (res.json());
         }).then(function (msg) {
-            if (msg.status === 200) {
-                window.location.href = msg.message;
+            if (msg.status === 301) {
+                redirectToHomePage(msg.url);
             } else {
                 message.innerHTML = msg.message;
                 console.log(msg);
@@ -76,6 +98,8 @@ if (signInButton) {
 
         signInForm.reset();
     });
+
+
     const fields = {
         "signin-username": "Empty Username",
         "signin-password": "Empty Password",
@@ -97,6 +121,7 @@ if (logoutButton) {
         fetch(url + "/logout", {
             method: "POST",
         })
+        localStorage.removeItem('jwt');
         window.location.href = "/v1";
     })
     const homeMessage = document.getElementById("home-message");

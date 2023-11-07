@@ -12,7 +12,7 @@ const pizzaRouter = require('./routes/pizza');
 
 const MySQLStore = require('express-mysql-session')(session);
 const dataConnection = require('./config/database');
-const passport = require('passport');
+const passport = require('./middleware/passport');
 const flash = require("connect-flash");
 
 // const RedisStore = require('connect-redis').default;
@@ -74,6 +74,7 @@ app.use(passport.initialize());
 app.use(flash());
 app.use('/v1', loginRouter);
 app.use('/v1', pizzaRouter);
+
 
 
 // //catch 404 and forward to error handler

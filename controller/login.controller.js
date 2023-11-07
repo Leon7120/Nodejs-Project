@@ -31,9 +31,9 @@ var login = async (req, res) => {
     try {
         let result = await services.login(req.body);
         if (result) {
-            console.log(result.token);
             res.setHeader("authorization", result.token);
-            res.send({ status: 200, message: "/v1/home" });
+            // res.redirect("/v1/home");
+            res.send({ status: 301, url: "/home" });
         } else {
             res.send({ message: "Invalid Username Or Password" });
         }

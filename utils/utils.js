@@ -1,8 +1,10 @@
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+require('dotenv').config();
+
 const JWT = {
-    secret: process.env.JWT_SECRET || '12345-67890-09876-54321',
-    jwtExp: '100d',
+    secret: process.env.ACCESS_TOKEN_SECRET,
+    jwtExp: '5d',
 }
 
 function validPassword(password, hashPassword) {
@@ -32,7 +34,7 @@ const checkAuthenticated = (req, res, next) => {
     }
 }
 const issueToken = user => {
-    return "Bearer " + jwt.sign({ sub: user }, '12345-67890-09876-54321', {
+    return "Bearer " + jwt.sign({ sub: user }, JWT.secret, {
         expiresIn: '1d',
     })
 }
