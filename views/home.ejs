@@ -7,8 +7,8 @@
       <nav class="sidebar">
         <div class="sidebar_content">
           <div class="upper_items">
+            <div class="sidebar_title">Dashboard</div>
             <ul class="sidebar_items">
-              <div class="sidebar_title">Dashboard</div>
               <li class="item">
                 <button class="span-button"><span class="span_item">Admin</span></button>
                 <!-- <i class="bx bx-chevron-right arrow-left"></i> -->
@@ -20,8 +20,8 @@
                 </ul>
               </li>
             </ul>
+            <div class="sidebar_title">Actions</div>
             <ul class="sidebar_items">
-              <div class="sidebar_title">Actions</div>
               <li class="item">
                 <button class="span-button"><span class="span_item">Get</span></button>
               </li>
@@ -35,8 +35,8 @@
                 <button class="span-button"><span class="span_item">Delete</span></button>
               </li>
             </ul>
+            <div class="sidebar_title">Shopping</div>
             <ul class="sidebar_items">
-              <div class="sidebar_title">Shopping</div>
               <li class="item">
                 <button class="span-button"><span class="span_item">Cart</span></button>
               </li>
@@ -74,14 +74,14 @@
                 <label for="get-id">Pizza Id</label>
               </div>
               <div class="actions-input">
-                <input type="text" id="get-category" name="get-category" autocomplete="off">
+                <input type="text" id="category-input" name="get-category" autocomplete="off">
                 <label for="get-category">Category</label>
               </div>
               <div class="actions-input">
-                <input type="text" id="get-price" name="get-price" autocomplete="off">
+                <input type="text" id="price-input" name="get-price" autocomplete="off">
                 <label for="get-price">Price</label>
               </div>
-              <button class="actions-button" id="get-button">Get</button>
+              <button class="actions-button" id="actions-button">Get</button>
             </div>
           </div>
           <div class="actions-form" id="create-pizza-div">
@@ -145,11 +145,10 @@
             </div>
           </div>
         </div>
-        <table class="table" id="table" autocomplete ='off'>
-          <tbody id="table-data"> 
+        <table class="table" id="table" autocomplete='off'>
+          <tbody id="table-data">
           </tbody>
         </table>
-
 
 
       </div>

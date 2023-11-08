@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS User (
     user_id varchar(36) NOT NULL UNIQUE,
     user_username varchar(50) UNIQUE NOT NULL,
     user_password varchar(255) NOT NULL,
-    user_createDate datetime NOT NULL,
     user_status boolean NOT NULL DEFAULT 1,
     PRIMARY KEY (user_id)
 );
@@ -30,6 +29,5 @@ CREATE TABLE IF NOT EXISTS OrderDetails (
     FOREIGN KEY (pizza_id) REFERENCES Pizza(pizza_id),
     FOREIGN KEY (order_id) REFERENCES `Order`(order_id)
 );
-INSERT INTO User VALUES (uuid(),'654321','123456@Abc',NOW(),default),(1,'123456','123456@Abc',NOW(),default);
 INSERT INTO Pizza VALUES (1,'hawaii', 20),(2,'mozallera', 25),(3,'veggie', 25),(4,"pepperoni",30),
 (5,"beef",35),(6,"margherita",30),(7,"supreme",40),(8,"new-york",20),(9,"mozzarella",25),(10,"salami",30);

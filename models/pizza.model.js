@@ -2,16 +2,17 @@ const { DataTypes } = require('sequelize');
 const db = require('../config/sequelize');
 
 const pizza = db.sequelize.define('Pizza', {
-    P_Id: {
+    pizza_id:{
         type: DataTypes.INTEGER,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
     },
-    P_Category: {
+    pizza_category: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    P_Price: {
+    pizza_price: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
@@ -19,5 +20,7 @@ const pizza = db.sequelize.define('Pizza', {
 }, {
     tableName: 'Pizza'
 })
+pizza.sync({ alter: true });
+
 
 module.exports = pizza;

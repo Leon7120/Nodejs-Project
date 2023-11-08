@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var controller = require('../controller/pizza.controller.js');
 var validator = require('../middleware/validator.js');
-var authentication = require('../utils/utils.js')
+var pagination = require("../middleware/pagination.js");
+var utils = require('../utils/utils.js')
 const axios = require('axios');
 const redis = require('redis');
 
@@ -43,7 +44,9 @@ async function cacheData(req, res) {
         res.status(404);
     }
 }
-router.get('/pizza', controller.getAllPizza);
+// router.get('/pizza',pagination.paginationMiddleware(10), controller.getAllPizza);
+router.get('/pizza', controller.getPizza);
+
 router.get('/pizza/:id', controller.getOnePizza);
 router.post('/pizza',validator.pizzaValidator(), controller.createPizza);
 router.delete('/pizza/:id', controller.deletePizza);

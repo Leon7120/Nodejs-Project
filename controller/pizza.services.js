@@ -4,61 +4,65 @@ const Op = sequelize.Op;
 
 function transformArray(data) {
     return data.map(item => ({
-        id: item.P_Id,
-        category: item.P_Category,
-        price: item.P_Price
+        id: item.pizza_id,
+        category: item.pizza_category,
+        price: item.pizza_price
     }));
 }
 function transformObject(data) {
     return {
-        id: data.P_Id,
-        category: data.P_Category,
-        price: data.P_Price
+        id: data.pizza_id,
+        category: data.pizza_category,
+        price: data.pizza_price
     };
 }
 
-const getAllPizza = async () => {
+const getAllPizza = async (limit, offset) => {
     try {
-        const pizza = await pizzaModel.findAll();
-        if (!pizza) {
+        const { count, rows } = await pizzaModel.findAndCountAll({
+            limit : limit,
+            offset : offset
+        });
+        if (!rows) {
             return false;
         } else {
-            return transformArray(pizza);
+            return { count: count, data: transformArray (rows)};
         }
     } catch (err) {
         throw new Error(err);
     }
 }
-const getSpecificPizza = async (query) => {
+const getSpecificPizza = async (query, limit, offset) => {
     const whereParameter = {};
     try {
         if (query.id || query.category || query.price) {
             whereParameter[Op.and] = [];
             if (query.id) {
                 whereParameter[Op.and].push({
-                    P_Id: { [Op.like]: query.id }
+                    pizza_id: { [Op.like]: query.id }
                 })
             }
             if (query.category) {
                 whereParameter[Op.and].push({
-                    P_Category: { [Op.like]: `%${query.category}%` }
+                    pizza_category: { [Op.like]: `%${query.category}%` }
                 })
             }
             if (query.price) {
                 whereParameter[Op.and].push({
-                    P_Price: { [Op.like]: query.price }
+                    pizza_price: { [Op.like]: query.price }
                 })
             }
         }
-        const pizza = await pizzaModel.findAll(
+        const { count, rows } = await pizzaModel.findAndCountAll(
             {
-                where:
-                    whereParameter
+                where: whereParameter,
+                limit: limit,
+                offset: offset,
             })
-        if (pizza.length == 0 || pizza == null) {
+        if (!rows.length) {
             return false;
         } else {
-            return transformArray(pizza);
+            return { count: count, data: transformArray(rows) };
         }
     } catch (err) {
         throw new Error(err);
@@ -67,7 +71,7 @@ const getSpecificPizza = async (query) => {
 const getOnePizza = async (id) => {
     try {
         const pizza = await pizzaModel.findOne({
-            where: { P_Id: id }
+            where: { pizza_id: id }
         })
         if (!pizza) {
             return false;
@@ -81,9 +85,9 @@ const getOnePizza = async (id) => {
 var createPizza = async (body) => {
     try {
         return await pizzaModel.create({
-            "P_Id": body.id,
-            "P_Category": body.category,
-            "P_Price": body.price
+            "pizza_id": body.id,
+            "pizza_category": body.category,
+            "pizza_price": body.price
         });
     } catch (err) {
         if (err.name === 'SequelizeUniqueConstraintError') {
@@ -96,7 +100,7 @@ var createPizza = async (body) => {
 
 var deletePizza = async (id) => {
     try {
-        const result = await pizzaModel.destroy({ where: { P_Id: id } })
+        const result = await pizzaModel.destroy({ where: { pizza_id: id } })
         if (!result || result == 0) {
             return false;
         } else {
@@ -112,8 +116,8 @@ var updatePizza = async (id, category, price) => {
         if (!pizza) {
             return false
         }
-        pizza.P_Category = category;
-        pizza.P_Price = price;
+        pizza.pizza_category = category;
+        pizza.pizza_price = price;
         await pizza.save();
         return true;
     } catch (err) {

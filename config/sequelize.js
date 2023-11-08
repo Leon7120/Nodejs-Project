@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
       define: {
          timestamps: false, //Universal model config;
          underscore: true, //Universal model config;
-       }
+       },
     }
   );
 sequelize.authenticate().then(() => {

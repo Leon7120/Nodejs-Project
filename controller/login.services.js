@@ -5,15 +5,15 @@ var register = async (body) => {
     try {
         const existingUser = await userModel.findOne({
             where: {
-                u_username: body.username
+                user_username: body.username
             }
         });
         if (existingUser) {
             return { "errno": 1062 };
         } else {
             return await userModel.create({
-                "u_username": body.username,
-                "u_password": genPassword(body.password)
+                "user_username": body.username,
+                "user_password": utils.genPassword(body.password)
             });
         }
     } catch (err) {
@@ -27,15 +27,15 @@ var login = async (body) => {
     try {
         const user = await userModel.findOne({
             where: {
-                u_username: body.username
+                user_username: body.username
             }
         });
         if (!user || user.length <= 0) {
             return false
         } else {
-            const check = utils.validPassword(body.password, user.u_password);
+            const check = utils.validPassword(body.password, user.user_password);
             if (check) {
-                return ({ user: user.u_username, token: utils.issueToken(user.u_username) });
+                return ({ user: user.user_username, token: utils.issueToken(user.user_username) });
             } else {
                 return false
             }

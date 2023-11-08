@@ -1,20 +1,28 @@
 const services = require('./pizza.services');
 const { validationResult } = require("express-validator");
 
-var getAllPizza = async (req, res) => {
+var getPizza = async (req, res) => {
+    var page = parseInt(req.query.page) || 1;
+    var limit = parseInt(req.query.limit) || 5;
+    var offset = (page - 1) * limit;
+
     try {
-        if (Object.keys(req.query).length === 0) {
-            var getAll = await services.getAllPizza();
-        } else if (req.query.id || req.query.category || req.query.price) {
-            var getSpecificPizza = await services.getSpecificPizza(req.query);
+        if (req.query.id || req.query.category || req.query.price) {
+            var getPizza = await services.getSpecificPizza(req.query, limit, offset);
+        } else {
+            var getPizza = await services.getAllPizza(limit, offset);
         }
-        if (getSpecificPizza || getAll) {
+        var totalpage = Math.ceil(getPizza.count / limit);
+
+        if (getPizza) {
+
             res.status(200)
-                .send({ data: getSpecificPizza || getAll });
+                .send({ data: getPizza.data, pagecount: totalpage });
         } else {
             res.status(400)
                 .send({ message: "No pizza found!" })
         }
+
     } catch (error) {
         console.error(error);
         res.status(error?.status || 500)
@@ -97,7 +105,7 @@ var getOnePizza = async (req, res) => {
     }
 }
 module.exports = {
-    getAllPizza,
+    getPizza,
     createPizza,
     deletePizza,
     updatePizza,
